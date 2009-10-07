@@ -18,7 +18,7 @@
  **/
 @implementation CPPlainBlackTheme
 
-+(NSString *)name 
++(NSString *)defaultName 
 {
 	return kCPPlainBlackTheme;
 }
@@ -45,11 +45,11 @@
     CPLineStyle *majorLineStyle = [CPLineStyle lineStyle];
     majorLineStyle.lineCap = kCGLineCapRound;
     majorLineStyle.lineColor = [CPColor whiteColor];
-    majorLineStyle.lineWidth = 2.0f;
+    majorLineStyle.lineWidth = 3.0f;
     
     CPLineStyle *minorLineStyle = [CPLineStyle lineStyle];
     minorLineStyle.lineColor = [CPColor whiteColor];
-    minorLineStyle.lineWidth = 1.0f;
+    minorLineStyle.lineWidth = 3.0f;
 	
     CPXYAxis *x = axisSet.xAxis;
 	CPTextStyle *whiteTextStyle = [[[CPTextStyle alloc] init] autorelease];

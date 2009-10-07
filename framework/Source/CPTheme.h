@@ -2,13 +2,9 @@
 #import <Foundation/Foundation.h>
 
 @class CPGraph;
-@class CPXYGraph;
 @class CPPlotArea;
-@class CPXYPlotSpace;
 @class CPAxisSet;
-@class CPLineStyle;
 @class CPTextStyle;
-@class CPXYAxis;
 
 /// @file
 
@@ -20,17 +16,20 @@ extern NSString * const kCPPlainBlackTheme;
 extern NSString * const kCPStocksTheme;
 /// @}
 
-@interface CPTheme : NSObject {
+@interface CPTheme : NSObject {	
+	NSString *name;
 	Class graphClass;
 }
 
-@property (nonatomic, assign) Class graphClass;
+@property (copy) NSString *name;
+@property (nonatomic, readwrite, retain) Class graphClass;
 
 +(NSArray *)themeClasses;
 +(CPTheme *)themeNamed:(NSString *)theme;
-+(NSString *)name;
++(void)addTheme:(CPTheme *)newTheme;
 
-+(Class)requiredGraphSubclass;
+-(NSString *)name;
++(NSString *)defaultName;
 
 -(id)newGraph;
 

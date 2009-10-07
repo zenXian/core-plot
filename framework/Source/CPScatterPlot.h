@@ -64,8 +64,6 @@ typedef enum _CPScatterPlotField {
     CPFill *areaFill;
     NSDecimal areaBaseValue;	// TODO: NSDecimal instance variables in CALayers cause an unhandled property type encoding error
 	double doublePrecisionAreaBaseValue;
-    NSArray *xValues;
-    NSArray *yValues;
     NSArray *plotSymbols;
 } 
 

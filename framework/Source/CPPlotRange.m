@@ -3,6 +3,7 @@
 #import "CPPlatformSpecificCategories.h"
 #import "NSDecimalNumberExtensions.h"
 #import "CPUtilities.h"
+#import "CPDefinitions.h"
 
 /** @brief Defines a range of plot data
  **/
@@ -156,6 +157,37 @@
 -(BOOL)contains:(NSDecimal)number
 {
 	return (CPDecimalGreaterThanOrEqualTo(number, location) && CPDecimalLessThanOrEqualTo(number, self.end));
+}
+
+#pragma mark -
+#pragma mark Combining ranges
+
+-(void)unionPlotRange:(CPPlotRange *)other 
+{
+    NSDecimal newLocation = (CPDecimalLessThan(self.location, other.location) ? self.location : other.location);
+    NSDecimal max1 = CPDecimalAdd(self.location, self.length);
+    NSDecimal max2 = CPDecimalAdd(other.location, other.length);
+    NSDecimal max = (CPDecimalGreaterThan(max1, max2) ? max1 : max2);
+    NSDecimal newLength = CPDecimalSubtract(max, newLocation);
+    self.location = newLocation;
+    self.length = newLength;
+}
+
+#pragma mark -
+#pragma mark Expanding/Contracting ranges
+
+/** @brief Extends/contracts the range by a factor.
+ *  @param factor Factor used. A value of 1.0 gives no change.
+ 	Less than 1.0 is a contraction, and greater than 1.0 is 
+    expansion.
+ **/
+-(void)expandRangeByFactor:(NSDecimal)factor {
+    NSDecimal newLength = CPDecimalMultiply(length, factor);
+    NSDecimal locationOffset = CPDecimalDivide( CPDecimalSubtract(newLength, length), 
+    	CPDecimalFromInt(2));
+    NSDecimal newLocation = CPDecimalSubtract(location, locationOffset);
+    self.location = newLocation;
+    self.length = newLength;
 }
 
 #pragma mark -

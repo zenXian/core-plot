@@ -23,4 +23,8 @@
 
 -(BOOL)contains:(NSDecimal)number;
 
+-(void)unionPlotRange:(CPPlotRange *)otherRange;
+
+-(void)expandRangeByFactor:(NSDecimal)factor;
+
 @end

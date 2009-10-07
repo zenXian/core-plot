@@ -29,8 +29,8 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 @property (nonatomic, readwrite, copy) NSString *keyPathForYValues;
 @property (nonatomic, readwrite, copy) NSString *keyPathForPlotSymbols;
 
-@property (nonatomic, readwrite, retain) NSArray *xValues;
-@property (nonatomic, readwrite, retain) NSArray *yValues;
+@property (nonatomic, readwrite, copy) NSArray *xValues;
+@property (nonatomic, readwrite, copy) NSArray *yValues;
 @property (nonatomic, readwrite, retain) NSArray *plotSymbols;
 
 @end
@@ -46,8 +46,6 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 @synthesize keyPathForXValues;
 @synthesize keyPathForYValues;
 @synthesize keyPathForPlotSymbols;
-@synthesize xValues;
-@synthesize yValues;
 @synthesize plotSymbols;
 
 /** @property dataLineStyle
@@ -98,6 +96,12 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 
 -(id)initWithFrame:(CGRect)newFrame
 {
+<<<<<<< local
+    if (self = [super initWithFrame:newFrame]) {
+		self.dataLineStyle = [CPLineStyle lineStyle];
+		self.plotSymbols = nil;
+		self.plotSymbol = nil;
+=======
 	if ( self = [super initWithFrame:newFrame] ) {
 		observedObjectForXValues = nil;
 		observedObjectForYValues = nil;
@@ -113,6 +117,7 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 		xValues = nil;
 		yValues = nil;
 		plotSymbols = nil;
+>>>>>>> other
 		self.needsDisplayOnBoundsChange = YES;
 	}
 	return self;
@@ -124,6 +129,18 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 	if ( observedObjectForYValues ) [self unbind:CPScatterPlotBindingYValues];
 	if ( observedObjectForPlotSymbols ) [self unbind:CPScatterPlotBindingPlotSymbols];
 
+<<<<<<< local
+    self.observedObjectForXValues = nil;
+    self.observedObjectForYValues = nil;
+    self.observedObjectForPlotSymbols = nil;
+    self.keyPathForXValues = nil;
+    self.keyPathForYValues = nil;
+    self.keyPathForPlotSymbols = nil;
+	self.plotSymbols = nil;
+	self.plotSymbol = nil;
+    self.dataLineStyle = nil;
+    self.areaFill = nil;
+=======
 	[keyPathForXValues release];
 	[keyPathForYValues release];
 	[keyPathForPlotSymbols release];
@@ -133,6 +150,7 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 	[xValues release];
 	[yValues release];
 	[plotSymbols release];
+>>>>>>> other
 	
 	[super dealloc];
 }
@@ -219,9 +237,13 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 {	 
 	[super reloadData];
 	
+<<<<<<< local
+    self.plotSymbols = nil;
+=======
 	self.xValues = nil;
 	self.yValues = nil;
 	self.plotSymbols = nil;
+>>>>>>> other
 	
 	if ( self.observedObjectForXValues && self.observedObjectForYValues ) {
 		// Use bindings to retrieve data
@@ -299,14 +321,23 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 		}
 	}
 
+<<<<<<< local
+    // path
+    CGMutablePathRef dataLinePath = NULL;
+    if ( self.dataLineStyle || self.areaFill ) {
+        dataLinePath = CGPathCreateMutable();
+		CGPoint alignedPoint = CPAlignPointToUserSpace(theContext, CGPointMake(viewPoints[0].x, viewPoints[0].y));
+        CGPathMoveToPoint(dataLinePath, NULL, alignedPoint.x, alignedPoint.y);
+=======
 	// path
 	CGMutablePathRef dataLinePath = NULL;
 	if ( self.dataLineStyle || self.areaFill ) {
 		dataLinePath = CGPathCreateMutable();
 		CGPoint alignedPoint = alignPointToUserSpace(theContext, CGPointMake(viewPoints[0].x, viewPoints[0].y));
 		CGPathMoveToPoint(dataLinePath, NULL, alignedPoint.x, alignedPoint.y);
+>>>>>>> other
 		for (NSUInteger i = 1; i < self.xValues.count; i++) {
-			alignedPoint = alignPointToUserSpace(theContext, CGPointMake(viewPoints[i].x, viewPoints[i].y));
+			alignedPoint = CPAlignPointToUserSpace(theContext, CGPointMake(viewPoints[i].x, viewPoints[i].y));
 			CGPathAddLineToPoint(dataLinePath, NULL, alignedPoint.x, alignedPoint.y);
 		}		 
 	}
@@ -333,6 +364,28 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 			baseLinePoint = [self.plotSpace viewPointInLayer:self forDoublePrecisionPlotPoint:doublePrecisionPlotPoint];
 		}
 		
+<<<<<<< local
+        CGFloat baseLineYValue = baseLinePoint.y;
+        
+        CGPoint baseViewPoint1 = viewPoints[self.xValues.count-1];
+        baseViewPoint1.y = baseLineYValue;
+		baseViewPoint1 = CPAlignPointToUserSpace(theContext, baseViewPoint1);
+        CGPoint baseViewPoint2 = viewPoints[0];
+        baseViewPoint2.y = baseLineYValue;
+		baseViewPoint2 = CPAlignPointToUserSpace(theContext, baseViewPoint2);
+        
+        CGMutablePathRef fillPath = CGPathCreateMutableCopy(dataLinePath);
+        CGPathAddLineToPoint(fillPath, NULL, baseViewPoint1.x, baseViewPoint1.y);
+        CGPathAddLineToPoint(fillPath, NULL, baseViewPoint2.x, baseViewPoint2.y);
+        CGPathCloseSubpath(fillPath);
+        
+        CGContextBeginPath(theContext);
+        CGContextAddPath(theContext, fillPath);
+        [self.areaFill fillPathInContext:theContext];
+        
+        CGPathRelease(fillPath);
+    }
+=======
 		CGFloat baseLineYValue = baseLinePoint.y;
 		
 		CGPoint baseViewPoint1 = viewPoints[self.xValues.count-1];
@@ -353,6 +406,7 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 		
 		CGPathRelease(fillPath);
 	}
+>>>>>>> other
 
 	// draw line
 	if ( self.dataLineStyle ) {
@@ -370,7 +424,7 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 				if (i < self.plotSymbols.count) {
 					id <NSObject> currentSymbol = [self.plotSymbols objectAtIndex:i];
 					if ([currentSymbol isKindOfClass:[CPPlotSymbol class]]) {
-						[(CPPlotSymbol *)currentSymbol renderInContext:theContext atPoint:alignPointToUserSpace(theContext, viewPoints[i])];			
+						[(CPPlotSymbol *)currentSymbol renderInContext:theContext atPoint:CPAlignPointToUserSpace(theContext, viewPoints[i])];			
 					} 
 				} 
 			}
@@ -378,12 +432,42 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 		else {
 			CPPlotSymbol *theSymbol = self.plotSymbol;
 			for (NSUInteger i = 0; i < self.xValues.count; i++) {
-				[theSymbol renderInContext:theContext atPoint:alignPointToUserSpace(theContext,viewPoints[i])];
+				[theSymbol renderInContext:theContext atPoint:CPAlignPointToUserSpace(theContext,viewPoints[i])];
 			}
 		}
 	}
 	
 	free(viewPoints);
+}
+
+#pragma mark -
+#pragma mark Fields
+
+-(NSUInteger)numberOfFields 
+{
+    return 2;
+}
+
+-(NSArray *)fieldIdentifiers 
+{
+    return [NSArray arrayWithObjects:[NSNumber numberWithUnsignedInt:CPScatterPlotFieldX], [NSNumber numberWithUnsignedInt:CPScatterPlotFieldY], nil];
+}
+
+-(NSArray *)fieldIdentifiersForCoordinate:(CPCoordinate)coord 
+{
+	NSArray *result = nil;
+	switch (coord) {
+        case CPCoordinateX:
+            result = [NSArray arrayWithObject:[NSNumber numberWithUnsignedInt:CPScatterPlotFieldX]];
+            break;
+        case CPCoordinateY:
+            result = [NSArray arrayWithObject:[NSNumber numberWithUnsignedInt:CPScatterPlotFieldY]];
+            break;
+        default:
+        	[NSException raise:CPException format:@"Invalid coordinate passed to fieldIdentifiersForCoordinate:"];
+            break;
+    }
+    return result;
 }
 
 #pragma mark -
@@ -398,12 +482,22 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 	}
 }
 
+<<<<<<< local
+-(void)setDataLineStyle:(CPLineStyle *)value 
+{
+    if (dataLineStyle != value) {
+        [dataLineStyle release];
+        dataLineStyle = [value copy];
+        [self setNeedsDisplay];
+    }
+=======
 -(void)setDataLineStyle:(CPLineStyle *)value {
 	if (dataLineStyle != value) {
 		[dataLineStyle release];
 		dataLineStyle = [value copy];
 		[self setNeedsDisplay];
 	}
+>>>>>>> other
 }
 
 -(void)setAreaBaseValue:(NSDecimal)newAreaBaseValue
@@ -414,6 +508,26 @@ static NSString * const CPPlotSymbolsBindingContext = @"CPPlotSymbolsBindingCont
 	}
 	areaBaseValue = newAreaBaseValue;
 	doublePrecisionAreaBaseValue = [[NSDecimalNumber decimalNumberWithDecimal:areaBaseValue] doubleValue];
+}
+
+-(void)setXValues:(NSArray *)newValues 
+{
+    [self cacheNumbers:newValues forField:CPScatterPlotFieldX];
+}
+
+-(NSArray *)xValues 
+{
+    return [self cachedNumbersForField:CPScatterPlotFieldX];
+}
+
+-(void)setYValues:(NSArray *)newValues 
+{
+    [self cacheNumbers:newValues forField:CPScatterPlotFieldY];
+}
+
+-(NSArray *)yValues 
+{
+    return [self cachedNumbersForField:CPScatterPlotFieldY];
 }
 
 @end

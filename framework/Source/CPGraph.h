@@ -7,6 +7,7 @@
 @class CPPlot;
 @class CPPlotArea;
 @class CPPlotSpace;
+@class CPTheme;
 
 @interface CPGraph : CPBorderedLayer {
 @private
@@ -53,9 +54,14 @@
 -(void)removePlotSpace:(CPPlotSpace *)plotSpace;
 ///	@}
 
+/// @name Themes
+/// @{
+-(void)applyTheme:(CPTheme *)theme;
+/// @}
+
 @end
 
-@interface CPGraph(AbstractFactoryMethods)
+@interface CPGraph (AbstractFactoryMethods)
 
 -(CPPlotSpace *)newPlotSpace;
 -(CPAxisSet *)newAxisSet;

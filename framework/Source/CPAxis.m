@@ -310,6 +310,7 @@
 	
 	switch (self.axisLabelingPolicy) {
 		case CPAxisLabelingPolicyNone:
+        case CPAxisLabelingPolicyLocationsProvided:
             // Assume locations are set by user
             allNewMajorLocations = [[self.majorTickLocations mutableCopy] autorelease];
             allNewMinorLocations = [[self.minorTickLocations mutableCopy] autorelease];
@@ -334,15 +335,20 @@
 			break;
 	}
 	
-	// Filter and set tick locations	
-	self.majorTickLocations = [self filteredMajorTickLocations:allNewMajorLocations];
-	self.minorTickLocations = [self filteredMinorTickLocations:allNewMinorLocations];
-	
-	// Label ticks
-	NSArray *newLabels = [self newAxisLabelsAtLocations:self.majorTickLocations.allObjects];
-	self.axisLabels = [NSSet setWithArray:newLabels];
-    [newLabels release];
-    
+    if ( self.axisLabelingPolicy != CPAxisLabelingPolicyNone &&
+    	 self.axisLabelingPolicy != CPAxisLabelingPolicyLocationsProvided ) {
+        // Filter and set tick locations	
+        self.majorTickLocations = [self filteredMajorTickLocations:allNewMajorLocations];
+        self.minorTickLocations = [self filteredMinorTickLocations:allNewMinorLocations];
+    }
+        
+    if ( self.axisLabelingPolicy != CPAxisLabelingPolicyNone ) {
+        // Label ticks
+        NSArray *newLabels = [self newAxisLabelsAtLocations:self.majorTickLocations.allObjects];
+        self.axisLabels = [NSSet setWithArray:newLabels];
+        [newLabels release];
+    }
+
     self.needsRelabel = NO;
 	
 	[self.delegate axisDidRelabel:self];
@@ -391,7 +397,7 @@
 	
     for ( CPAxisLabel *label in self.axisLabels ) {
         CGPoint tickBasePoint = [self viewPointForCoordinateDecimalNumber:label.tickLocation];
-        [label positionRelativeToViewPoint:tickBasePoint forCoordinate:OrthogonalCoordinate(self.coordinate) inDirection:self.tickDirection];
+        [label positionRelativeToViewPoint:tickBasePoint forCoordinate:CPOrthogonalCoordinate(self.coordinate) inDirection:self.tickDirection];
     }
 }
 

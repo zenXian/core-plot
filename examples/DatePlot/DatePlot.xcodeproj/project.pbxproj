@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		071BCBD71079EBE00045E43D /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 071BCBD61079EBE00045E43D /* CorePlot.framework */; };
 		076185040F3CB17800A89A76 /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 076184C10F3CAD5900A89A76 /* CorePlot.framework */; };
 		0761850B0F3CB1E800A89A76 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076184C10F3CAD5900A89A76 /* CorePlot.framework */; };
 		077382B10F3DC1FB002F10E2 /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 077382B00F3DC1FB002F10E2 /* Controller.m */; };
@@ -14,11 +15,9 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		90AF4F440F36CF1800753D26 /* CPTestApp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AF4F430F36CF1800753D26 /* CPTestApp.xib */; };
+		90AF4F440F36CF1800753D26 /* DatePlot.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AF4F430F36CF1800753D26 /* DatePlot.xib */; };
 		BC8E737D0FC0B3CF00DF8511 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC8E737C0FC0B3CF00DF8511 /* QuartzCore.framework */; };
-		BC8E74240FC0B96000DF8511 /* RotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC8E74230FC0B96000DF8511 /* RotationView.m */; };
 		BCB3FD520FD85658008875A4 /* CorePlotIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = BCB3FD510FD85658008875A4 /* CorePlotIcon.icns */; };
-		C34D4F8E0F8ED78400969C24 /* CPPlotSymbolTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = C34D4F8C0F8ED78400969C24 /* CPPlotSymbolTestController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		071BCBD61079EBE00045E43D /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CorePlot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		076184BC0F3CAD5900A89A76 /* CorePlot.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CorePlot.xcodeproj; path = ../../framework/CorePlot.xcodeproj; sourceTree = SOURCE_ROOT; };
 		0761854B0F3CB3CB00A89A76 /* CorePlot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CorePlot.framework; path = ../../../../framework/build/Debug/CorePlot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		077382AF0F3DC1FB002F10E2 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
@@ -85,16 +85,12 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		32CA4F630368D1EE00C91783 /* CPTestApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTestApp_Prefix.pch; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* DatePlot_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePlot_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* CPTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CPTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		90AF4F430F36CF1800753D26 /* CPTestApp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CPTestApp.xib; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* DatePlot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatePlot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		90AF4F430F36CF1800753D26 /* DatePlot.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePlot.xib; sourceTree = "<group>"; };
 		BC8E737C0FC0B3CF00DF8511 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		BC8E74220FC0B96000DF8511 /* RotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotationView.h; sourceTree = "<group>"; };
-		BC8E74230FC0B96000DF8511 /* RotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotationView.m; sourceTree = "<group>"; };
 		BCB3FD510FD85658008875A4 /* CorePlotIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = CorePlotIcon.icns; sourceTree = "<group>"; };
-		C34D4F8C0F8ED78400969C24 /* CPPlotSymbolTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPPlotSymbolTestController.m; sourceTree = "<group>"; };
-		C34D4F8D0F8ED78400969C24 /* CPPlotSymbolTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPPlotSymbolTestController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +101,7 @@
 				0761850B0F3CB1E800A89A76 /* CorePlot.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				BC8E737D0FC0B3CF00DF8511 /* QuartzCore.framework in Frameworks */,
+				071BCBD71079EBE00045E43D /* CorePlot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,12 +122,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C34D4F8D0F8ED78400969C24 /* CPPlotSymbolTestController.h */,
-				C34D4F8C0F8ED78400969C24 /* CPPlotSymbolTestController.m */,
 				077382AF0F3DC1FB002F10E2 /* Controller.h */,
 				077382B00F3DC1FB002F10E2 /* Controller.m */,
-				BC8E74220FC0B96000DF8511 /* RotationView.h */,
-				BC8E74230FC0B96000DF8511 /* RotationView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -140,6 +133,7 @@
 			children = (
 				BC8E737C0FC0B3CF00DF8511 /* QuartzCore.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				071BCBD61079EBE00045E43D /* CorePlot.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -157,7 +151,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* CPTestApp.app */,
+				8D1107320486CEB800E47090 /* DatePlot.app */,
 				0761854B0F3CB3CB00A89A76 /* CorePlot.framework */,
 			);
 			name = Products;
@@ -179,7 +173,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				32CA4F630368D1EE00C91783 /* CPTestApp_Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* DatePlot_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -190,7 +184,7 @@
 			children = (
 				07C13BBA0FF9322A00BEE616 /* BlueTexture.png */,
 				BCB3FD510FD85658008875A4 /* CorePlotIcon.icns */,
-				90AF4F430F36CF1800753D26 /* CPTestApp.xib */,
+				90AF4F430F36CF1800753D26 /* DatePlot.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -209,9 +203,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* CPTestApp */ = {
+		8D1107260486CEB800E47090 /* DatePlot */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "CPTestApp" */;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "DatePlot" */;
 			buildPhases = (
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
@@ -223,10 +217,10 @@
 			dependencies = (
 				076184D00F3CAE1100A89A76 /* PBXTargetDependency */,
 			);
-			name = CPTestApp;
+			name = DatePlot;
 			productInstallPath = "$(HOME)/Applications";
 			productName = CPTestApp;
-			productReference = 8D1107320486CEB800E47090 /* CPTestApp.app */;
+			productReference = 8D1107320486CEB800E47090 /* DatePlot.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -237,7 +231,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = NO;
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "CPTestApp" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DatePlot" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CPTestApp */;
@@ -250,7 +244,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* CPTestApp */,
+				8D1107260486CEB800E47090 /* DatePlot */,
 			);
 		};
 /* End PBXProject section */
@@ -292,7 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				90AF4F440F36CF1800753D26 /* CPTestApp.xib in Resources */,
+				90AF4F440F36CF1800753D26 /* DatePlot.xib in Resources */,
 				BCB3FD520FD85658008875A4 /* CorePlotIcon.icns in Resources */,
 				07C13BBB0FF9322A00BEE616 /* BlueTexture.png in Resources */,
 			);
@@ -307,8 +301,6 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				077382B10F3DC1FB002F10E2 /* Controller.m in Sources */,
-				C34D4F8E0F8ED78400969C24 /* CPPlotSymbolTestController.m in Sources */,
-				BC8E74240FC0B96000DF8511 /* RotationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,13 +340,13 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = CPTestApp_Prefix.pch;
+				GCC_PREFIX_HEADER = DatePlot_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "-lgcov";
-				PRODUCT_NAME = CPTestApp;
+				PRODUCT_NAME = DatePlot;
 			};
 			name = Debug;
 		};
@@ -369,11 +361,11 @@
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = CPTestApp_Prefix.pch;
+				GCC_PREFIX_HEADER = DatePlot_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = CPTestApp;
+				PRODUCT_NAME = DatePlot;
 			};
 			name = Release;
 		};
@@ -408,7 +400,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "CPTestApp" */ = {
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "DatePlot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
@@ -417,7 +409,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "CPTestApp" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DatePlot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

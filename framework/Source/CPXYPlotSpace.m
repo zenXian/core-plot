@@ -6,6 +6,7 @@
 #import "CPXYAxisSet.h"
 #import "CPXYAxis.h"
 #import "CPAxisSet.h"
+#import "CPPlot.h"
 
 /// @cond
 @interface CPXYPlotSpace ()
@@ -87,20 +88,49 @@
 	}
 }
 
+-(void)scaleToFitPlots:(NSArray *)plots {
+	if ( plots.count == 0 ) return;
+    
+	// Determine union of ranges
+	CPPlotRange *unionXRange = [[plots objectAtIndex:0] plotRangeForCoordinate:CPCoordinateX];
+    CPPlotRange *unionYRange = [[plots objectAtIndex:0] plotRangeForCoordinate:CPCoordinateY];
+    for ( CPPlot *plot in plots ) {
+    	[unionXRange unionPlotRange:[plot plotRangeForCoordinate:CPCoordinateX]];
+        [unionYRange unionPlotRange:[plot plotRangeForCoordinate:CPCoordinateY]];
+    }
+    
+    // Set range
+    self.xRange = unionXRange;
+    self.yRange = unionYRange;
+}
+
 #pragma mark -
 #pragma mark Point Conversion
 
 -(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPPlotRange *)range plotCoordinateValue:(NSDecimal)plotCoord 
 {	 
 	NSDecimal factor = CPDecimalDivide(CPDecimalSubtract(plotCoord, range.location), range.length);
+<<<<<<< local
+    
+    if ( NSDecimalIsNotANumber(&factor) ) {
+        [NSException raise:CPException format:@"range length is zero in viewCoordinateForViewLength:..."];
+    }
+    
+=======
 	
 	if ( NSDecimalIsNotANumber(&factor) ) {
 		[NSException raise:CPException format:@"range length is zero in viewCoordinateForViewLength:..."];
 	}
 	
+>>>>>>> other
 	CGFloat viewCoordinate = viewLength * [[NSDecimalNumber decimalNumberWithDecimal:factor] doubleValue];
+<<<<<<< local
+    
+    return viewCoordinate;
+=======
 	
 	return viewCoordinate;
+>>>>>>> other
 }
 
 -(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPPlotRange *)range doublePrecisionPlotCoordinateValue:(double)plotCoord;

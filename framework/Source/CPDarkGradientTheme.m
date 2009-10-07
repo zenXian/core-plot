@@ -17,7 +17,7 @@
 ///	@cond
 @interface CPDarkGradientTheme ()
 
--(void)applyThemeToAxis:(CPXYAxis *)axis usingMajorLineStyle:(CPLineStyle *)majorLineStyle andMinorLineStyle:(CPLineStyle *)minorLineStyle andTextStyle:(CPTextStyle *)textStyle;
+-(void)applyThemeToAxis:(CPXYAxis *)axis usingMajorLineStyle:(CPLineStyle *)majorLineStyle minorLineStyle:(CPLineStyle *)minorLineStyle textStyle:(CPTextStyle *)textStyle;
 
 @end
 ///	@endcond
@@ -31,12 +31,12 @@
 /// @defgroup CPDarkGradientTheme CPDarkGradientTheme
 /// @{
 
-+(NSString *)name 
++(NSString *)defaultName 
 {
 	return kCPDarkGradientTheme;
 }
 
--(void)applyThemeToAxis:(CPXYAxis *)axis usingMajorLineStyle:(CPLineStyle *)majorLineStyle andMinorLineStyle:(CPLineStyle *)minorLineStyle andTextStyle:(CPTextStyle *)textStyle
+-(void)applyThemeToAxis:(CPXYAxis *)axis usingMajorLineStyle:(CPLineStyle *)majorLineStyle minorLineStyle:(CPLineStyle *)minorLineStyle textStyle:(CPTextStyle *)textStyle
 {
 	axis.axisLabelingPolicy = CPAxisLabelingPolicyFixedInterval;
     axis.majorIntervalLength = CPDecimalFromString(@"0.5");
@@ -77,22 +77,35 @@
 }
 
 -(void)applyThemeToAxisSet:(CPXYAxisSet *)axisSet {
+<<<<<<< local
+	CPLineStyle *borderLineStyle = [CPLineStyle lineStyle];
+    borderLineStyle.lineColor = [CPColor colorWithGenericGray:0.2];
+    borderLineStyle.lineWidth = 3.0f;
+	
+	CPBorderedLayer *borderedLayer = (CPBorderedLayer *)axisSet.overlayLayer;
+	borderedLayer.borderLineStyle = borderLineStyle;
+	borderedLayer.cornerRadius = 10.0f;
+	axisSet.overlayLayerInsetX = -4.f;
+	axisSet.overlayLayerInsetY = -4.f;
+    
+=======
+>>>>>>> other
     CPLineStyle *majorLineStyle = [CPLineStyle lineStyle];
-    majorLineStyle.lineCap = kCGLineCapButt;
+    majorLineStyle.lineCap = kCGLineCapSquare;
     majorLineStyle.lineColor = [CPColor colorWithGenericGray:0.5];
     majorLineStyle.lineWidth = 2.0f;
     
     CPLineStyle *minorLineStyle = [CPLineStyle lineStyle];
-    minorLineStyle.lineCap = kCGLineCapButt;
+    minorLineStyle.lineCap = kCGLineCapSquare;
     minorLineStyle.lineColor = [CPColor darkGrayColor];
-    minorLineStyle.lineWidth = 2.0f;
+    minorLineStyle.lineWidth = 1.0f;
 	
 	CPTextStyle *whiteTextStyle = [[[CPTextStyle alloc] init] autorelease];
 	whiteTextStyle.color = [CPColor whiteColor];
 	whiteTextStyle.fontSize = 14.0;
 	
     for (CPXYAxis *axis in axisSet.axes) {
-        [self applyThemeToAxis:axis usingMajorLineStyle:majorLineStyle andMinorLineStyle:minorLineStyle andTextStyle:whiteTextStyle];
+        [self applyThemeToAxis:axis usingMajorLineStyle:majorLineStyle minorLineStyle:minorLineStyle textStyle:whiteTextStyle];
     }
 }
 
