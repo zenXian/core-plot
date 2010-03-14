@@ -272,7 +272,7 @@
 		4C6C4C770FCF1EF700D6AB30 /* TMImageViewTests-testRenderNotSelected.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TMImageViewTests-testRenderNotSelected.tiff"; path = "TestResources/TMImageViewTests-testRenderNotSelected.tiff"; sourceTree = "<group>"; };
 		4C6C4C780FCF1EF700D6AB30 /* TMImageViewTests-testRenderSelected.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TMImageViewTests-testRenderSelected.tiff"; path = "TestResources/TMImageViewTests-testRenderSelected.tiff"; sourceTree = "<group>"; };
 		4C6C4C880FCF1F5C00D6AB30 /* TMImageViewTests-testRenderNilURLImage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TMImageViewTests-testRenderNilURLImage.tiff"; path = "TestResources/TMImageViewTests-testRenderNilURLImage.tiff"; sourceTree = "<group>"; };
-		4C7D30560FC202CD00005D98 /* TestMerge-UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TestMerge-UnitTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C7D30560FC202CD00005D98 /* Untitled.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Untitled.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C7D30570FC202CD00005D98 /* TestMerge-UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestMerge-UnitTests-Info.plist"; sourceTree = "<group>"; };
 		4C7D30920FC2043000005D98 /* TMOutputSorterTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMOutputSorterTests.h; sourceTree = "<group>"; };
 		4C7D30930FC2043000005D98 /* TMOutputSorterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMOutputSorterTests.m; sourceTree = "<group>"; };
@@ -628,7 +628,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* TestMerge.app */,
-				4C7D30560FC202CD00005D98 /* TestMerge-UnitTests.octest */,
+				4C7D30560FC202CD00005D98 /* Untitled.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1236,7 +1236,7 @@
 			);
 			name = "TestMerge-UnitTests";
 			productName = Untitled;
-			productReference = 4C7D30560FC202CD00005D98 /* TestMerge-UnitTests.octest */;
+			productReference = 4C7D30560FC202CD00005D98 /* Untitled.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		8D1107260486CEB800E47090 /* TestMerge */ = {
