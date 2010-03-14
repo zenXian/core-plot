@@ -224,7 +224,7 @@
     STAssertEqualObjects(controllerPaths, expectedPaths, @"");
 }
 
-- (void)testUnitTestOutputPathsFromPath {
+- (void)testUnitTestIPhoneOutputPathsFromPath {
     NSString *groupTestRoot = [[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"IPhoneOutputGroupTest"];
     
     BOOL dir;
