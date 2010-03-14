@@ -16,6 +16,7 @@ extern NSString * const TMMergeControllerDidCommitMerge;
 @interface TMMergeController : NSWindowController {
     NSString *referencePath;
     NSString *outputPath;
+	NSString *imageUTI;
     
     NSSet *outputGroups;
     
@@ -35,6 +36,7 @@ extern NSString * const TMMergeControllerDidCommitMerge;
 
 @property (copy,readwrite) NSString * referencePath;
 @property (copy,readwrite) NSString * outputPath;
+@property (copy,readwrite) NSString *imageUTI;
 @property (copy,readonly) NSSet *outputGroups;
 @property (retain,readwrite) NSManagedObjectContext *managedObjectContext;
 @property (retain,readonly) NSPredicate *groupFilterPredicate;

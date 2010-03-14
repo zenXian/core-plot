@@ -76,9 +76,9 @@
 		4CB6D4A71149C2DC004713F1 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6D47B1149C176004713F1 /* GTMSystemVersion.m */; };
 		4CB6D4A81149C2DF004713F1 /* GTMRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6D4691149C176004713F1 /* GTMRegex.m */; };
 		4CB6D56F1149C81E004713F1 /* TMOutputGroupCDFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6D56D1149C81E004713F1 /* TMOutputGroupCDFactory.m */; };
-		4CB6DC0E114AE977004713F1 /* IPhoneOutputGroupTest in Resources */ = {isa = PBXBuildFile; fileRef = 4CB6DC05114AE977004713F1 /* IPhoneOutputGroupTest */; };
 		4CB6DCF7114AEA74004713F1 /* GTMMethodCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6D2FD1149BFE9004713F1 /* GTMMethodCheck.m */; };
 		4CB6DD02114AEDC1004713F1 /* GTMNSNumber+64Bit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6D4491149C176004713F1 /* GTMNSNumber+64Bit.m */; };
+		4CC62395114D7E9900FF3FDF /* IPhoneOutputGroupTest in Resources */ = {isa = PBXBuildFile; fileRef = 4CC6238C114D7E9900FF3FDF /* IPhoneOutputGroupTest */; };
 		4CC9A4020FD995C100CFBE5E /* _OutputFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC9A4010FD995C100CFBE5E /* _OutputFile.m */; };
 		4CC9A4050FD995D700CFBE5E /* OutputFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC9A4040FD995D700CFBE5E /* OutputFile.m */; };
 		4CC9A4170FD9963C00CFBE5E /* OutputGroupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC9A4160FD9963C00CFBE5E /* OutputGroupTests.m */; };
@@ -545,7 +545,7 @@
 		4CB6D4851149C176004713F1 /* GTMValidatingContainersTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMValidatingContainersTest.m; sourceTree = "<group>"; };
 		4CB6D56D1149C81E004713F1 /* TMOutputGroupCDFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMOutputGroupCDFactory.m; sourceTree = "<group>"; };
 		4CB6D56E1149C81E004713F1 /* TMOutputGroupCDFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMOutputGroupCDFactory.h; sourceTree = "<group>"; };
-		4CB6DC05114AE977004713F1 /* IPhoneOutputGroupTest */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPhoneOutputGroupTest; path = TestResources/IPhoneOutputGroupTest; sourceTree = "<group>"; };
+		4CC6238C114D7E9900FF3FDF /* IPhoneOutputGroupTest */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPhoneOutputGroupTest; path = TestResources/IPhoneOutputGroupTest; sourceTree = "<group>"; };
 		4CC9A4000FD995C100CFBE5E /* _OutputFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _OutputFile.h; sourceTree = "<group>"; };
 		4CC9A4010FD995C100CFBE5E /* _OutputFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _OutputFile.m; sourceTree = "<group>"; };
 		4CC9A4030FD995D700CFBE5E /* OutputFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutputFile.h; sourceTree = "<group>"; };
@@ -642,7 +642,7 @@
 				7756732906782D8800D1FEB8 /* Models */,
 				4C7D32DF0FC22FEF00005D98 /* Test Resources */,
 				4C6C4A2C0FCDC5C700D6AB30 /* OutputGroupTest */,
-				4CB6DC05114AE977004713F1 /* IPhoneOutputGroupTest */,
+				4CC6238C114D7E9900FF3FDF /* IPhoneOutputGroupTest */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -1413,7 +1413,7 @@
 				4C5111C40FDDA28F00D4CBCF /* TMSelectableViewTests-testRendering-selected-background.tiff in Resources */,
 				4C5111C50FDDA28F00D4CBCF /* TMSelectableViewTests-testRendering-selected-nobackground.tiff in Resources */,
 				4C5111C60FDDA28F00D4CBCF /* TMSelectableViewTests-testRendering-unselected-background.tiff in Resources */,
-				4CB6DC0E114AE977004713F1 /* IPhoneOutputGroupTest in Resources */,
+				4CC62395114D7E9900FF3FDF /* IPhoneOutputGroupTest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

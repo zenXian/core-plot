@@ -46,15 +46,24 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.mergeController = [[TMMergeController alloc] initWithWindowNibName:@"MergeUI"];
     
-    self.mergeController.compareControllersByExtension = [NSDictionary dictionaryWithObjectsAndKeys:
+    self.mergeController.referencePath = [[[[NSProcessInfo processInfo] environment] objectForKey:@"TM_REFERENCE_PATH"] stringByExpandingTildeInPath];
+    self.mergeController.outputPath = [[[[NSProcessInfo processInfo] environment] objectForKey:@"TM_OUTPUT_PATH"] stringByExpandingTildeInPath];
+	
+	NSString *uti = [[[NSProcessInfo processInfo] environment] objectForKey:@"TM_IMAGE_UTI"];
+	self.mergeController.imageUTI = uti==nil?[NSString stringWithString:(NSString*)kUTTypeTIFF] : uti;
+	
+	
+	NSString* imageExtension = (NSString*)UTTypeCopyPreferredTagWithClass((CFStringRef)self.mergeController.imageUTI, kUTTagClassFilenameExtension);
+    _GTMDevAssert(imageExtension, @"No extension for UTI: %@", self.mergeController.imageUTI);
+    
+	self.mergeController.compareControllersByExtension = [NSDictionary dictionaryWithObjectsAndKeys:
                                                           [[TMImageCompareController alloc] initWithNibName:@"ImageCompareView" bundle:[NSBundle mainBundle]],
-                                                          TMGTMUnitTestImageExtension,
+                                                          (NSString*)imageExtension,
                                                           [[TMUTStateCompareController alloc] initWithNibName:@"UTStateCompareView" bundle:[NSBundle mainBundle]],
                                                           TMGTMUnitTestStateExtension,
                                                           nil];
-    
-    self.mergeController.referencePath = [[[[NSProcessInfo processInfo] environment] objectForKey:@"TM_REFERENCE_PATH"] stringByExpandingTildeInPath];
-    self.mergeController.outputPath = [[[[NSProcessInfo processInfo] environment] objectForKey:@"TM_OUTPUT_PATH"] stringByExpandingTildeInPath];
+	
+	[imageExtension release];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(mergeControllerDidCommitMerge:)

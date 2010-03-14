@@ -15,7 +15,7 @@
 #import "GTMSystemVersion.h"
 
 NSString * const TMGTMUnitTestStateExtension = @"gtmUTState";
-NSString * const TMGTMUnitTestImageExtension = @"tiff"; // !!!:barry:20090528 TODO -- get this dynamically as in GTMNSObject+UnitTesting
+NSString * const TMGTMDefaultUnitTestImageExtension = @"tiff"; // !!!:barry:20090528 TODO -- get this dynamically as in GTMNSObject+UnitTesting
 
 static const NSUInteger GroupNameIndex = 1;
 

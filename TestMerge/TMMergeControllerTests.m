@@ -59,7 +59,9 @@
     controller.referencePath = @"/System/Library";
     controller.outputPath = @"/Library";
     
-    (void)[controller window];
+    [[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
+	
+	[[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     GTMAssertObjectImageEqualToImageNamed(controller.window, @"TMMergeControllerTests-testWindowUIRendering", @"");
 }
@@ -76,7 +78,7 @@
     controller.outputPath = [groupTestRoot stringByAppendingPathComponent:@"Output"];
     
     
-    (void)[controller window];
+    [[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     STAssertTrue(controller.outputGroups.count > 0, @"");
     
@@ -94,9 +96,10 @@
     
     controller.referencePath = [groupTestRoot stringByAppendingPathComponent:@"Reference"];
     controller.outputPath = [groupTestRoot stringByAppendingPathComponent:@"Output"];
+	controller.imageUTI = (NSString*)kUTTypePNG;
     
     
-    (void)[controller window];
+    [[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     STAssertTrue(controller.outputGroups.count > 0, @"");
     
@@ -109,19 +112,21 @@
     STAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:groupTestRoot isDirectory:&dir] && dir, @"");
     
     TMMergeController *controller = [[[TMMergeController alloc] initWithWindowNibName:@"MergeUI"] autorelease];
+	
+	[[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     controller.referencePath = [groupTestRoot stringByAppendingPathComponent:@"Reference"];
     controller.outputPath = [groupTestRoot stringByAppendingPathComponent:@"Output"];
     
     controller.compareControllersByExtension = [NSDictionary dictionaryWithObjectsAndKeys:
                                                 [[TMImageCompareController alloc] initWithNibName:@"ImageCompareView" bundle:[NSBundle mainBundle]],
-                                                TMGTMUnitTestImageExtension,
+                                                @"tiff",
                                                 [[TMUTStateCompareController alloc] initWithNibName:@"UTStateCompareView" bundle:[NSBundle mainBundle]],
                                                 TMGTMUnitTestStateExtension,
                                                 nil];
     
     
-    (void)[controller window];
+    [[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     STAssertTrue(controller.outputGroups.count > 0, @"");
     
@@ -159,13 +164,13 @@
     
     controller.compareControllersByExtension = [NSDictionary dictionaryWithObjectsAndKeys:
                                                 [[TMImageCompareController alloc] initWithNibName:@"ImageCompareView" bundle:[NSBundle mainBundle]],
-                                                TMGTMUnitTestImageExtension,
+                                                @"tiff",
                                                 [[TMUTStateCompareController alloc] initWithNibName:@"UTStateCompareView" bundle:[NSBundle mainBundle]],
                                                 TMGTMUnitTestStateExtension,
                                                 nil];
     
     
-    (void)[controller window];
+	[[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     STAssertTrue(controller.outputGroups.count > 0, @"");
     
@@ -262,7 +267,7 @@
 - (void)testPSCCreation {
     TMMergeController *controller = [[[TMMergeController alloc] initWithWindowNibName:@"MergeUI"] autorelease];
     
-    (void)[controller window];
+    [[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     STAssertNotNil(controller.managedObjectContext, @"");
     STAssertTrue(controller.managedObjectContext.persistentStoreCoordinator.persistentStores.count > 0, @"");
@@ -271,7 +276,7 @@
 - (void)testBindings {
     TMMergeController *controller = [[[TMMergeController alloc] initWithWindowNibName:@"MergeUI"] autorelease];
     
-    (void)[controller window];
+    [[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
     
     GTMDoExposedBindingsFunctionCorrectly(controller, nil);
 }
@@ -294,7 +299,7 @@
     @try {
         
         TMMergeController *controller = [[TMMergeController alloc] initWithWindowNibName:@"MergeUI"];
-        (void)[controller window];
+        [[controller window] setFrame:NSMakeRect(100, 100, 800, 400) display:YES];
         
         controller.referencePath = [targetPath stringByAppendingPathComponent:@"Reference"];
         controller.outputPath = [targetPath stringByAppendingPathComponent:@"Output"];
