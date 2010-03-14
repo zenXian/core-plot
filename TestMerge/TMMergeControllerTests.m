@@ -224,6 +224,35 @@
     STAssertEqualObjects(controllerPaths, expectedPaths, @"");
 }
 
+- (void)testUnitTestOutputPathsFromPath {
+    NSString *groupTestRoot = [[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"IPhoneOutputGroupTest"];
+    
+    BOOL dir;
+    STAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:groupTestRoot isDirectory:&dir] && dir, @"");
+    
+    TMMergeController *controller = [[[TMMergeController alloc] initWithWindowNibName:@"MergeUI"] autorelease];
+    
+    controller.referencePath = [groupTestRoot stringByAppendingPathComponent:@"Reference"];
+    controller.outputPath = [groupTestRoot stringByAppendingPathComponent:@"Output"];
+    
+    NSArray *expectedPaths = [[NSArray arrayWithObjects:
+							   [[controller referencePath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol.i386.tiff"],
+							   nil]
+                              sortedArrayUsingSelector:@selector(compare:)];
+    
+    STAssertEqualObjects([controller gtmUnitTestOutputPathsFromPath:controller.referencePath], expectedPaths, @"");
+    
+    
+    NSArray *controllerPaths = [[controller gtmUnitTestOutputPathsFromPath:controller.outputPath] sortedArrayUsingSelector:@selector(compare:)];
+    
+    expectedPaths = [[NSArray arrayWithObjects:
+					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed.i386.10.5.7.tiff"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed_Diff.i386.10.5.7.tiff"],
+					  nil] sortedArrayUsingSelector:@selector(compare:)];
+    
+    STAssertEqualObjects(controllerPaths, expectedPaths, @"");
+}
+
 - (void)testGroupFilterPredicate {
     TMMergeController *controller = [[[TMMergeController alloc] initWithWindowNibName:@"MergeUI"] autorelease];
     
