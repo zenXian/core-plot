@@ -32,6 +32,7 @@ NSString * const TMMergeControllerDidCommitMerge = @"TMMergeControllerDidCommitM
 @implementation TMMergeController
 @synthesize referencePath;
 @synthesize outputPath;
+@synthesize imageUTI;
 @dynamic outputGroups;
 @dynamic groupFilterPredicate;
 @dynamic groupSortDescriptors;
@@ -45,6 +46,7 @@ NSString * const TMMergeControllerDidCommitMerge = @"TMMergeControllerDidCommitM
 - (void)dealloc {
     [referencePath release];
     [outputPath release];
+	[imageUTI release];
     [managedObjectContext release];
     [groupsController release];
     [mergeViewContainer release];
@@ -52,6 +54,16 @@ NSString * const TMMergeControllerDidCommitMerge = @"TMMergeControllerDidCommitM
     [currentCompareController release];
     
     [super dealloc];
+}
+
+- (id)initWithWindow:(NSWindow *)window {
+	
+	self = [super initWithWindow:window];
+	if(self != nil) {
+		imageUTI = [[NSString alloc] initWithString:(NSString*)kUTTypeTIFF];
+	}
+	
+	return self;
 }
 
 + (void)initialize {
@@ -94,26 +106,28 @@ NSString * const TMMergeControllerDidCommitMerge = @"TMMergeControllerDidCommitM
 }
 
 - (NSArray*)gtmUnitTestOutputPathsFromPath:(NSString*)path {
+	
     NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:NULL];
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:contents.count];
     
     // We can't get this information from GTMNSObject+UnitTesting b/c it is SenTestKit dependent, so we have to recreate gtm_imageUTI/gtm_imageExtension/gtm_stateExtension
     
-    CFStringRef imageUTI;
-#if GTM_IPHONE_SDK
-    imageUTI = kUTTypePNG;
-#else
-    // Currently can't use PNG on Leopard. (10.5.2)
-    // Radar:5844618 PNG importer/exporter in ImageIO is lossy
-    imageUTI = kUTTypeTIFF;
-#endif
+//    CFStringRef imageUTI;
+//#if GTM_IPHONE_SDK
+//    imageUTI = kUTTypePNG;
+//#else
+//    // Currently can't use PNG on Leopard. (10.5.2)
+//    // Radar:5844618 PNG importer/exporter in ImageIO is lossy
+//    imageUTI = kUTTypeTIFF;
+//#endif
+	
     
     NSString *imageExtension;
     
 #if GTM_IPHONE_SDK
-    if (CFEqual(imageU, kUTTypePNG)) {
+    if (CFEqual((CFStringRef)self.imageUTI, kUTTypePNG)) {
         imageExtension = @"png";
-    } else if (CFEqual(imageUTI, kUTTypeJPEG)) {
+    } else if (CFEqual((CFStringRef)self.imageUTI, kUTTypeJPEG)) {
         imageExtension = @"jpg";
     } else {
         _GTMDevAssert(NO, @"Illegal UTI for iPhone");
@@ -121,8 +135,8 @@ NSString * const TMMergeControllerDidCommitMerge = @"TMMergeControllerDidCommitM
     
 #else
     imageExtension 
-    = (NSString*)UTTypeCopyPreferredTagWithClass(imageUTI, kUTTagClassFilenameExtension);
-    _GTMDevAssert(imageExtension, @"No extension for uti: %@", imageUTI);
+    = (NSString*)UTTypeCopyPreferredTagWithClass((CFStringRef)self.imageUTI, kUTTagClassFilenameExtension);
+    _GTMDevAssert(imageExtension, @"No extension for uti: %@", self.imageUTI);
     
     GTMCFAutorelease(imageExtension);
 #endif

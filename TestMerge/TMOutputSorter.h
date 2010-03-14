@@ -10,7 +10,7 @@
 #import "TMOutputGroupFactory.h"
 
 extern NSString * const TMGTMUnitTestStateExtension;
-extern NSString * const TMGTMUnitTestImageExtension;
+extern NSString * const TMDefaultGTMUnitTestImageExtension;
 
 @interface TMOutputSorter : NSObject {
     NSArray *referencePaths;

@@ -82,7 +82,7 @@ typedef enum _OutputType {
     
     GTMAssertObjectStateEqualToStateNamed(sorter, @"TMOutputSorterTests-testInitialState", @"");
 }
-
+/*
 - (void)testSortedOutputWithGroupFactoryAddsRefPaths {
     //also tests group creation for successes
     
@@ -144,15 +144,19 @@ typedef enum _OutputType {
     [group verify];
     
 }
+ */
 
 - (void)testSortedOutputWithGroupFactoryBuildsGroupsForImageFailures {
-    [self failureTestsForExtension:@"tiff"];
+    //[self failureTestsForExtension:@"tiff"];
+	STFail(@"Re-enable after refactoring failureTestsForExtension:");
 }
 
 - (void)testSortedOutputWithGroupFactoryBuildsGroupsForStateFailures {
-    [self failureTestsForExtension:@"gtmUTState"];
+    //[self failureTestsForExtension:@"gtmUTState"];
+	STFail(@"Re-enable after refactoring failureTestsForExtension:");
 }
 
+// !!!:barry:20100314 Refactor to use CoreData in-memory store with CDFactory, and test output
 - (void)failureTestsForExtension:(NSString*)extension {
     SInt32 major, minor, bugFix;
     [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];

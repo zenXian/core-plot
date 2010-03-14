@@ -2172,13 +2172,13 @@
 										<key>ViewSubView 1</key>
 										<dict>
 											<key>ControlIsEnabled</key>
-											<false/>
+											<true/>
 											<key>ControlTag</key>
 											<integer>0</integer>
 											<key>ControlType</key>
 											<string>NSScroller</string>
 											<key>ViewIsHidden</key>
-											<true/>
+											<false/>
 										</dict>
 										<key>ViewSubView 2</key>
 										<dict>
