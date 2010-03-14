@@ -49,8 +49,9 @@
     self.mergeController.referencePath = [[[[NSProcessInfo processInfo] environment] objectForKey:@"TM_REFERENCE_PATH"] stringByExpandingTildeInPath];
     self.mergeController.outputPath = [[[[NSProcessInfo processInfo] environment] objectForKey:@"TM_OUTPUT_PATH"] stringByExpandingTildeInPath];
 	
-	NSString *uti = [[[NSProcessInfo processInfo] environment] objectForKey:@"TM_IMAGE_UTI"];
-	self.mergeController.imageUTI = uti==nil?[NSString stringWithString:(NSString*)kUTTypeTIFF] : uti;
+	if([[[NSProcessInfo processInfo] environment] objectForKey:@"TM_IMAGE_UTI"] != nil) {
+		self.mergeController.imageUTI = [[[NSProcessInfo processInfo] environment] objectForKey:@"TM_IMAGE_UTI"];
+	}
 	
 	
 	NSString* imageExtension = (NSString*)UTTypeCopyPreferredTagWithClass((CFStringRef)self.mergeController.imageUTI, kUTTagClassFilenameExtension);
