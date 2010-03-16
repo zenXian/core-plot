@@ -181,26 +181,26 @@
     
     [controller.groupsController setSelectedObjects:[NSArray arrayWithObject:group]];
     
-    GTMAssertObjectEqualToStateAndImageNamed(controller.window, @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController", @"");
+    GTMAssertObjectEqualToStateAndImageNamed([controller.window contentView], @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController", @"");
     
     [group setReplaceReferenceValue:YES];
     
-    GTMAssertObjectEqualToStateAndImageNamed(controller.window, @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController+ReplaceReference", @"");
+    GTMAssertObjectEqualToStateAndImageNamed([controller.window contentView], @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController+ReplaceReference", @"");
     
     [group setReplaceReferenceValue:NO];
     
-    GTMAssertObjectEqualToStateAndImageNamed(controller.window, @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController+DoNotReplaceReference", @"");
+    GTMAssertObjectEqualToStateAndImageNamed([controller.window contentView], @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController+DoNotReplaceReference", @"");
     
     [group setReplaceReference:nil];
     
-    GTMAssertObjectEqualToStateAndImageNamed(controller.window, @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController+NilReplaceReference", @"");
+    GTMAssertObjectEqualToStateAndImageNamed([controller.window contentView], @"TMMergeControllerTests-testSelectsAndRendersUTStateCompareController+NilReplaceReference", @"");
 }
 
 - (void)testUnitTestOutputPathsFromPath {
     NSString *groupTestRoot = [[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"OutputGroupTest"];
     
     BOOL dir;
-    STAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:groupTestRoot isDirectory:&dir] && dir, @"");
+    STAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:groupTestRoot isDirectory:&dir] && dir, nil);
     
     TMMergeController *controller = [[[TMMergeController alloc] initWithWindowNibName:@"MergeUI"] autorelease];
     
@@ -208,23 +208,26 @@
     controller.outputPath = [groupTestRoot stringByAppendingPathComponent:@"Output"];
     
     NSArray *expectedPaths = [[NSArray arrayWithObjects:
-                              [[controller referencePath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering.tiff"],
-                              [[controller referencePath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol.i386.tiff"],
-                              nil]
+							   [[controller referencePath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering.tiff"],
+							   [[controller referencePath] stringByAppendingPathComponent:@"TMImageViewTests-testRenderSelected.gtmUTState"],
+							   [[controller referencePath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol.i386.tiff"],
+							   nil]
                               sortedArrayUsingSelector:@selector(compare:)];
     
-    STAssertEqualObjects([controller gtmUnitTestOutputPathsFromPath:controller.referencePath], expectedPaths, @"");
+    STAssertEqualObjects([controller gtmUnitTestOutputPathsFromPath:controller.referencePath], expectedPaths, nil);
     
     
     NSArray *controllerPaths = [[controller gtmUnitTestOutputPathsFromPath:controller.outputPath] sortedArrayUsingSelector:@selector(compare:)];
     
     expectedPaths = [[NSArray arrayWithObjects:
-                               [[controller outputPath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering_Failed.i386.10.5.7.tiff"],
-                               [[controller outputPath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering_Failed_Diff.i386.10.5.7.tiff"],
-                               [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed.i386.10.5.7.tiff"],
-                               [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed_Diff.i386.10.5.7.tiff"],
-                               [[controller outputPath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering2.i386.10.5.7.tiff"],
-                               nil] sortedArrayUsingSelector:@selector(compare:)];
+					  [[controller outputPath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering_Failed.i386.10.5.7.tiff"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering_Failed_Diff.i386.10.5.7.tiff"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed.i386.10.5.7.tiff"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed_Diff.i386.10.5.7.tiff"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"TMMergeControllerTests-testWindowUIRendering2.i386.10.5.7.tiff"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"TMImageViewTests-testRenderSelected_Failed.gtmUTState"],
+					  nil] 
+					 sortedArrayUsingSelector:@selector(compare:)];
     
     STAssertEqualObjects(controllerPaths, expectedPaths, @"");
 }
@@ -239,9 +242,10 @@
     
     controller.referencePath = [groupTestRoot stringByAppendingPathComponent:@"Reference"];
     controller.outputPath = [groupTestRoot stringByAppendingPathComponent:@"Output"];
+	controller.imageUTI = (NSString*)kUTTypePNG;
     
     NSArray *expectedPaths = [[NSArray arrayWithObjects:
-							   [[controller referencePath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol.i386.tiff"],
+							   [[controller referencePath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol.10.6.2.iPhone.png"],
 							   nil]
                               sortedArrayUsingSelector:@selector(compare:)];
     
@@ -251,8 +255,8 @@
     NSArray *controllerPaths = [[controller gtmUnitTestOutputPathsFromPath:controller.outputPath] sortedArrayUsingSelector:@selector(compare:)];
     
     expectedPaths = [[NSArray arrayWithObjects:
-					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed.i386.10.5.7.tiff"],
-					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed_Diff.i386.10.5.7.tiff"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed.10.6.2.iPhone.png"],
+					  [[controller outputPath] stringByAppendingPathComponent:@"CPXYGraphTests-testRenderScatterWithSymbol_Failed_Diff.10.6.2.iPhone.png"],
 					  nil] sortedArrayUsingSelector:@selector(compare:)];
     
     STAssertEqualObjects(controllerPaths, expectedPaths, @"");
