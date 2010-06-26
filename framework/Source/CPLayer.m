@@ -378,20 +378,19 @@
 	// This is where we do our custom replacement for the Mac-only layout manager and autoresizing mask
 	// Subclasses should override to lay out their own sublayers
 	// Sublayers fill the super layer's bounds minus any padding by default
+	CGFloat leftPadding = self.paddingLeft;
+	CGFloat bottomPadding = self.paddingBottom;
+	
 	CGRect selfBounds = self.bounds;
 	CGSize subLayerSize = selfBounds.size;
-	subLayerSize.width -= self.paddingLeft + self.paddingRight;
+	subLayerSize.width -= leftPadding + self.paddingRight;
 	subLayerSize.width = MAX(subLayerSize.width, 0.0);
-	subLayerSize.height -= self.paddingTop + self.paddingBottom;
+	subLayerSize.height -= self.paddingTop + bottomPadding;
 	subLayerSize.height = MAX(subLayerSize.height, 0.0);
 		
 	for (CALayer *subLayer in self.sublayers) {
 		if ([subLayer isKindOfClass:[CPLayer class]]) {
-			CGRect subLayerBounds = subLayer.bounds;
-			subLayerBounds.size = subLayerSize;
-			subLayer.bounds = subLayerBounds;
-			subLayer.anchorPoint = CGPointZero;
-			subLayer.position = CGPointMake(selfBounds.origin.x + self.paddingLeft, selfBounds.origin.y	+ self.paddingBottom);
+            subLayer.frame = CGRectMake(leftPadding, bottomPadding, subLayerSize.width, subLayerSize.height);
 		}
 	}
 }
@@ -516,7 +515,7 @@ static NSString * const BindingsNotSupportedString = @"Bindings are not supporte
 -(void)bind:(NSString *)binding toObject:(id)observable withKeyPath:(NSString *)keyPath options:(NSDictionary *)options
 {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    [NSException raise:CPException format:BindingsNotSupportedString];
+    [NSException raise:CPException format:@"%@", BindingsNotSupportedString];
 #else
     [super bind:binding toObject:observable withKeyPath:keyPath options:options];
 #endif
@@ -525,7 +524,7 @@ static NSString * const BindingsNotSupportedString = @"Bindings are not supporte
 -(void)unbind:(NSString *)binding
 {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    [NSException raise:CPException format:BindingsNotSupportedString];
+    [NSException raise:CPException format:@"%@", BindingsNotSupportedString];
 #else
     [super unbind:binding];
 #endif
@@ -534,7 +533,7 @@ static NSString * const BindingsNotSupportedString = @"Bindings are not supporte
 -(Class)valueClassForBinding:(NSString *)binding
 {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    [NSException raise:CPException format:BindingsNotSupportedString];
+    [NSException raise:CPException format:@"%@", BindingsNotSupportedString];
     return Nil;
 #else
     return [super valueClassForBinding:binding];

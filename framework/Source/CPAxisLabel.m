@@ -96,10 +96,11 @@
  *	@param point The view point.
  *	@param coordinate The coordinate in which the label is being position. Orthogonal to axis coordinate.
  *	@param direction The offset direction.
+ *	@param size The size to consider for positioning the label. Ignored if a content layer is present.
  **/
--(void)positionRelativeToViewPoint:(CGPoint)point forCoordinate:(CPCoordinate)coordinate inDirection:(CPSign)direction
+-(CGPoint)getPositionRelativeToViewPoint:(CGPoint)point forCoordinate:(CPCoordinate)coordinate inDirection:(CPSign)direction labelSize:(CGSize)size
 {
-	CPLayer *content = self.contentLayer;
+	CPLayer *content = self.contentLayer; // will be nil if rendering on single layer
 	CGPoint newPosition = point;
 	CGFloat *value = (coordinate == CPCoordinateX ? &(newPosition.x) : &(newPosition.y));
 	CGPoint anchor = CGPointZero;
@@ -131,22 +132,43 @@
 			break;
 	}
 	
-	// Pixel-align the label layer to prevent blurriness
-	CGSize currentSize = content.bounds.size;
+    CGSize currentSize = size ;
+    if ( content ) {
+		// Pixel-align the label layer to prevent blurriness
+    	currentSize = content.bounds.size;
+		content.anchorPoint = anchor;
 	
-	content.anchorPoint = anchor;
-	
-	if ( self.rotation == 0.0 ) {
-		newPosition.x = round(newPosition.x) - round(currentSize.width * anchor.x) + (currentSize.width * anchor.x);
-		newPosition.y = round(newPosition.y) - round(currentSize.height * anchor.y) + (currentSize.height * anchor.y);
-	}
-	else {
-		newPosition.x = round(newPosition.x);
-		newPosition.y = round(newPosition.y);
-	}
-	content.position = newPosition;
-    content.transform = CATransform3DMakeRotation(self.rotation, 0.0, 0.0, 1.0);
-	[content setNeedsDisplay];
+		if ( self.rotation == 0.0 ) {
+			newPosition.x = round(newPosition.x) - round(currentSize.width * anchor.x) + (currentSize.width * anchor.x);
+			newPosition.y = round(newPosition.y) - round(currentSize.height * anchor.y) + (currentSize.height * anchor.y);
+		}
+		else {
+			newPosition.x = round(newPosition.x);
+			newPosition.y = round(newPosition.y);
+		}
+		content.position = newPosition;
+    	content.transform = CATransform3DMakeRotation(self.rotation, 0.0, 0.0, 1.0);
+	//[content setNeedsDisplay];
+    }
+    else {
+	    newPosition.x = round(newPosition.x - currentSize.width * anchor.x);
+    	newPosition.y = round(newPosition.y - currentSize.height * anchor.y);
+    }
+    return newPosition ; // only used if rendering on single layer
+}
+
+/**	@brief Positions the axis label relative to the given point.
+ *  The algorithm for positioning is different when the rotation property is non-zero.
+ *  When zero, the anchor point is positioned along the closest side of the label.
+ *  When non-zero, the anchor point is left at the center. This has consequences for 
+ *  the value taken by the offset.
+ *	@param point The view point.
+ *	@param coordinate The coordinate in which the label is being position. Orthogonal to axis coordinate.
+ *	@param direction The offset direction.
+ **/
+-(void)positionRelativeToViewPoint:(CGPoint)point forCoordinate:(CPCoordinate)coordinate inDirection:(CPSign)direction
+{
+	[self getPositionRelativeToViewPoint:point forCoordinate:coordinate inDirection:direction labelSize:CGSizeZero] ;
 }
 
 /**	@brief Positions the axis label between two given points.

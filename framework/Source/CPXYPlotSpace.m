@@ -66,8 +66,8 @@
 -(id)init
 {
 	if ( self = [super init] ) {
-		xRange = nil;
-		yRange = nil;
+		xRange = [[CPPlotRange alloc] initWithLocation:CPDecimalFromInteger(0) length:CPDecimalFromInteger(1)];
+		yRange = [[CPPlotRange alloc] initWithLocation:CPDecimalFromInteger(0) length:CPDecimalFromInteger(1)];;
         globalXRange = nil;
         globalYRange = nil;
 		xScaleType = CPScaleTypeLinear;
@@ -105,11 +105,17 @@
 
 -(void)setXRange:(CPPlotRange *)range 
 {
+	NSParameterAssert(range);
 	if ( ![range isEqualToRange:xRange] ) {
         CPPlotRange *constrainedRange = [self constrainRange:range toGlobalRange:self.globalXRange];
 		[xRange release];
 		xRange = [constrainedRange copy];
-		[[NSNotificationCenter defaultCenter] postNotificationName:CPPlotSpaceCoordinateMappingDidChangeNotification object:self];
+        NSDictionary *userInfo = nil ;
+        CPXYAxis *orthogonalAxis = [self.graph.axisSet.axes objectAtIndex:CPCoordinateY] ;
+        if (orthogonalAxis.isFloatingAxis) {
+            userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:CPCoordinateX] forKey:@"CPCoordinate"] ;
+        }
+		[[NSNotificationCenter defaultCenter] postNotificationName:CPPlotSpaceCoordinateMappingDidChangeNotification object:self userInfo:userInfo];
     	if ( [self.delegate respondsToSelector:@selector(plotSpace:didChangePlotRangeForCoordinate:)] ) {
             [self.delegate plotSpace:self didChangePlotRangeForCoordinate:CPCoordinateX];
         }
@@ -118,11 +124,17 @@
 
 -(void)setYRange:(CPPlotRange *)range 
 {
+	NSParameterAssert(range);
 	if ( ![range isEqualToRange:yRange] ) {
         CPPlotRange *constrainedRange = [self constrainRange:range toGlobalRange:self.globalYRange];
 		[yRange release];
 		yRange = [constrainedRange copy];
-		[[NSNotificationCenter defaultCenter] postNotificationName:CPPlotSpaceCoordinateMappingDidChangeNotification object:self];
+        NSDictionary *userInfo = nil ;
+        CPXYAxis *orthogonalAxis = [self.graph.axisSet.axes objectAtIndex:CPCoordinateX] ;
+        if (orthogonalAxis.isFloatingAxis) {
+            userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:CPCoordinateY] forKey:@"CPCoordinate"] ;
+        }
+		[[NSNotificationCenter defaultCenter] postNotificationName:CPPlotSpaceCoordinateMappingDidChangeNotification object:self userInfo:userInfo];
         if ( [self.delegate respondsToSelector:@selector(plotSpace:didChangePlotRangeForCoordinate:)] ) {
             [self.delegate plotSpace:self didChangePlotRangeForCoordinate:CPCoordinateY];
         }

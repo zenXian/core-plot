@@ -35,7 +35,7 @@
     [super viewDidLoad];
     
     // Create graph from a custom theme
-    graph = [[CPXYGraph alloc] initWithFrame:CGRectZero];
+    graph = [[CPXYGraph alloc] initWithFrame:self.view.bounds];
     CPTheme *theme = [[TestXYTheme alloc] init] ;
     [graph applyTheme:theme];
     [theme release] ;
@@ -48,6 +48,16 @@
     plotSpace.allowsUserInteraction = NO;
     plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromFloat(0.0) length:CPDecimalFromFloat(NUM_POINTS)];
     plotSpace.yRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromFloat(0.0) length:CPDecimalFromFloat(NUM_POINTS)];
+
+    // Axes
+	CPXYAxisSet *axisSet = (CPXYAxisSet *)graph.axisSet;
+    CPXYAxis *x = axisSet.xAxis;
+    x.separateLayers = NO ;
+    x.separateLayerLabels = NO ;
+    
+    CPXYAxis *y = axisSet.yAxis;
+    y.separateLayers = NO ;
+    y.separateLayerLabels = NO ;
 
 	// Create a blue plot area
 	CPScatterPlot *boundLinePlot = [[[CPScatterPlot alloc] init] autorelease];

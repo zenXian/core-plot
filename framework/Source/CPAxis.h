@@ -100,6 +100,7 @@ typedef enum _CPAxisLabelingPolicy {
     CPPlotRange *visibleRange;
     CPPlotRange *gridLinesRange;
 	BOOL separateLayers;
+    BOOL separateLayerLabels ;
 	__weak CPPlotArea *plotArea;
 	__weak CPGridLines *minorGridLines;
 	__weak CPGridLines *majorGridLines;
@@ -169,6 +170,7 @@ typedef enum _CPAxisLabelingPolicy {
 /// @name Layers
 /// @{
 @property (nonatomic, readwrite, assign) BOOL separateLayers;
+@property (nonatomic, readwrite, assign) BOOL separateLayerLabels;
 @property (nonatomic, readwrite, assign) __weak CPPlotArea *plotArea;
 @property (nonatomic, readonly, assign) __weak CPGridLines *minorGridLines;
 @property (nonatomic, readonly, assign) __weak CPGridLines *majorGridLines;
@@ -204,6 +206,11 @@ typedef enum _CPAxisLabelingPolicy {
 /// @name Grid Lines
 /// @{
 -(void)drawGridLinesInContext:(CGContextRef)context isMajor:(BOOL)major;
+///	@}
+
+/// @name Single Layer Labels
+/// @{
+-(void)drawAxisLabelsInContext:(CGContextRef)context;
 ///	@}
 
 @end

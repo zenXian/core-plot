@@ -254,6 +254,14 @@
  **/
 @synthesize separateLayers;
 
+/**	@property separateLayerLabels
+ *  @brief Use separate layers for drawing axis labels?
+ *
+ *	If NO, the axis labels are drawn in a layer shared with other labels.
+ *	If YES, the default, the axis labels are drawn in their own layers.
+ **/
+@synthesize separateLayerLabels;
+
 /**	@property plotArea
  *  @brief The plot area that the axis belongs to.
  **/
@@ -317,6 +325,7 @@
 		delegate = nil;
 		plotArea = nil;
 		separateLayers = NO;
+		separateLayerLabels = YES;
 		minorGridLines = nil;
 		majorGridLines = nil;
 		
@@ -422,7 +431,7 @@
     // Determine interval value
     double roughInterval = length/numTicks ;
 	double exponentValue = pow( 10.0, floor(log10(fabs(roughInterval))) ) ;    
-    double interval = exponentValue * trunc(roughInterval/exponentValue) ;
+    double interval = exponentValue * round(roughInterval/exponentValue) ;
     
     // Determinie minor interval
     double minorInterval = interval / (minorTicks + 1) ;
@@ -463,6 +472,7 @@
     *newMajorLocations = majorLocations;
     *newMinorLocations = minorLocations;
 }
+
 
 /*
 -(void)autoGenerateMajorTickLocationsOld:(NSSet **)newMajorLocations minorTickLocations:(NSSet **)newMinorLocations 
@@ -547,6 +557,7 @@
 }
 */
 
+
 #pragma mark -
 #pragma mark Labels
 
@@ -577,71 +588,87 @@
 			break;
 	}
 	
-	
 	[self.plotArea setAxisSetLayersForType:CPGraphLayerTypeAxisLabels];
-
+    CPAxisLabelGroup *axisLabelGroup = self.plotArea.axisLabelGroup;
     NSMutableSet *newAxisLabels = [[NSMutableSet alloc] initWithCapacity:locations.count];
-	CPAxisLabel *blankLabel = [[CPAxisLabel alloc] initWithText:nil textStyle:nil];
-	CPAxisLabelGroup *axisLabelGroup = self.plotArea.axisLabelGroup;
-	CALayer *lastLayer = nil;
 
-	for ( NSDecimalNumber *tickLocation in locations ) {
-		CPAxisLabel *newAxisLabel;
-		BOOL needsNewContentLayer = NO;
-		
-		// reuse axis labels where possible--will prevent flicker when updating layers
-		blankLabel.tickLocation = [tickLocation decimalValue];
-		CPAxisLabel *oldAxisLabel = [self.axisLabels member:blankLabel];
-		
-		if ( oldAxisLabel ) {
-			newAxisLabel = [oldAxisLabel retain];
-		}
-		else {
-			newAxisLabel = [[CPAxisLabel alloc] initWithText:nil textStyle:nil];
+    if ( !self.separateLayerLabels ) {
+    	for ( NSDecimalNumber *tickLocation in locations ) {
+			CPAxisLabel *newAxisLabel = [[CPAxisLabel alloc] init];
+            newAxisLabel.contentLayer = nil ;
 			newAxisLabel.tickLocation = [tickLocation decimalValue];
-			needsNewContentLayer = YES;
-		}
+			newAxisLabel.rotation = self.labelRotation;
+			newAxisLabel.offset = offset;
+			[newAxisLabels addObject:newAxisLabel];
+			[newAxisLabel release];
+        }
+        
+        [axisLabelGroup setNeedsDisplay] ;
+    }
+	else {
+    
+		CPAxisLabel *blankLabel = [[CPAxisLabel alloc] initWithText:nil textStyle:nil];
+		CALayer *lastLayer = nil;
+
+		for ( NSDecimalNumber *tickLocation in locations ) {
+			CPAxisLabel *newAxisLabel;
+			BOOL needsNewContentLayer = NO;
 		
-		newAxisLabel.rotation = self.labelRotation;
-		newAxisLabel.offset = offset;
+			// reuse axis labels where possible--will prevent unnecessary drawing of layers
+			blankLabel.tickLocation = [tickLocation decimalValue];
+			CPAxisLabel *oldAxisLabel = [self.axisLabels member:blankLabel];
 		
-		if ( needsNewContentLayer || self.labelFormatterChanged ) {
-			NSString *labelString = [self.labelFormatter stringForObjectValue:tickLocation];
-			CPTextLayer *newLabelLayer = [[CPTextLayer alloc] initWithText:labelString style:self.labelTextStyle];
-			[oldAxisLabel.contentLayer removeFromSuperlayer];
-			newAxisLabel.contentLayer = newLabelLayer;
-			
-			if ( lastLayer ) {
-				[axisLabelGroup insertSublayer:newLabelLayer below:lastLayer];
+			if ( oldAxisLabel ) {
+				newAxisLabel = [oldAxisLabel retain];
 			}
 			else {
-				[axisLabelGroup insertSublayer:newLabelLayer atIndex:[self.plotArea sublayerIndexForAxis:self layerType:CPGraphLayerTypeAxisLabels]];
+				newAxisLabel = [[CPAxisLabel alloc] initWithText:nil textStyle:nil];
+				newAxisLabel.tickLocation = [tickLocation decimalValue];
+				needsNewContentLayer = YES;
 			}
-			
-			[newLabelLayer release];
-			CGPoint tickBasePoint = [self viewPointForCoordinateDecimalNumber:newAxisLabel.tickLocation];
-			[newAxisLabel positionRelativeToViewPoint:tickBasePoint forCoordinate:CPOrthogonalCoordinate(self.coordinate) inDirection:self.tickDirection];
-		}
-
-		lastLayer = newAxisLabel.contentLayer;
 		
-		[newAxisLabels addObject:newAxisLabel];
-		[newAxisLabel release];
+			newAxisLabel.rotation = self.labelRotation;
+			newAxisLabel.offset = offset;
+		
+			if ( needsNewContentLayer || self.labelFormatterChanged ) {
+				NSString *labelString = [self.labelFormatter stringForObjectValue:tickLocation];
+				CPTextLayer *newLabelLayer = [[CPTextLayer alloc] initWithText:labelString style:self.labelTextStyle];
+				[oldAxisLabel.contentLayer removeFromSuperlayer];
+				newAxisLabel.contentLayer = newLabelLayer;
+			
+				if ( lastLayer ) {
+					[axisLabelGroup insertSublayer:newLabelLayer below:lastLayer];
+				}
+				else {
+					[axisLabelGroup insertSublayer:newLabelLayer atIndex:[self.plotArea sublayerIndexForAxis:self layerType:CPGraphLayerTypeAxisLabels]];
+				}
+			
+				[newLabelLayer release];
+			}
+            
+            CGPoint tickBasePoint = [self viewPointForCoordinateDecimalNumber:newAxisLabel.tickLocation];
+            [newAxisLabel positionRelativeToViewPoint:tickBasePoint forCoordinate:CPOrthogonalCoordinate(self.coordinate) inDirection:self.tickDirection];
+
+			lastLayer = newAxisLabel.contentLayer;
+            [lastLayer setNeedsDisplay] ;
+		
+			[newAxisLabels addObject:newAxisLabel];
+			[newAxisLabel release];
+		}
+		[blankLabel release];
+    
+		// remove old labels that are not needed any more from the layer hierarchy
+		NSMutableSet *oldAxisLabels = [self.axisLabels mutableCopy];
+		[oldAxisLabels minusSet:newAxisLabels];
+		for ( CPAxisLabel *label in oldAxisLabels ) {
+			[label.contentLayer removeFromSuperlayer];
+		}
+		[oldAxisLabels release];
 	}
-	[blankLabel release];
-	
-	// remove old labels that are not needed any more from the layer hierarchy
-	NSMutableSet *oldAxisLabels = [self.axisLabels mutableCopy];
-	[oldAxisLabels minusSet:newAxisLabels];
-	for ( CPAxisLabel *label in oldAxisLabels ) {
-		[label.contentLayer removeFromSuperlayer];
-	}
-	[oldAxisLabels release];
-	
-	// do not use accessor because we've already updated the layer hierarchy
+    
+	// do not use accessor because we've already updated the layer hierarchy if any
 	[axisLabels release];
 	axisLabels = newAxisLabels;
-	[self setNeedsLayout];		
 	self.labelFormatterChanged = NO;
 }
 
@@ -1316,6 +1343,14 @@
  *	@param major Draw the major grid lines if YES, minor grid lines otherwise.
  **/
 -(void)drawGridLinesInContext:(CGContextRef)context isMajor:(BOOL)major
+{
+	// do nothing--subclasses must override to do their drawing	
+}
+
+/**	@brief Draws axis labels into the provided graphics context.
+ *	@param context The graphics context to draw into.
+ **/
+-(void)drawAxisLabelsInContext:(CGContextRef)context
 {
 	// do nothing--subclasses must override to do their drawing	
 }

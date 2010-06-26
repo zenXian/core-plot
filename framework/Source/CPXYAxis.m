@@ -2,13 +2,17 @@
 #import "CPConstrainedPosition.h"
 #import "CPDefinitions.h"
 #import "CPExceptions.h"
+#import "CPTextStyle.h"
 #import "CPLineStyle.h"
+#import "CPTextLayer.h"
 #import "CPPlotArea.h"
 #import "CPPlotRange.h"
 #import "CPPlotSpace.h"
 #import "CPUtilities.h"
 #import "CPXYAxis.h"
 #import "CPXYPlotSpace.h"
+
+
 
 ///	@cond
 @interface CPXYAxis ()
@@ -82,6 +86,7 @@
     CPCoordinate orthogonalCoordinate = (self.coordinate == CPCoordinateX ? CPCoordinateY : CPCoordinateX);
     CPXYPlotSpace *xyPlotSpace = (CPXYPlotSpace *)self.plotSpace;
     CPPlotRange *orthogonalRange = [xyPlotSpace plotRangeForCoordinate:orthogonalCoordinate];
+    NSAssert( orthogonalRange != nil, @"The orthogonalRange was nil in orthogonalCoordinateViewLowerBound:upperBound:" );
     CGPoint lowerBoundPoint = [self viewPointForOrthogonalCoordinateDecimal:orthogonalRange.location axisCoordinateDecimal:zero];
     CGPoint upperBoundPoint = [self viewPointForOrthogonalCoordinateDecimal:orthogonalRange.end axisCoordinateDecimal:zero];
     *lower = (self.coordinate == CPCoordinateX ? lowerBoundPoint.y : lowerBoundPoint.x);
@@ -184,9 +189,11 @@
 
 -(void)renderAsVectorInContext:(CGContextRef)theContext
 {
-	[super renderAsVectorInContext:theContext];
-	
-	[self relabel];
+
+    if ( self.needsRelabel ) {
+		[super renderAsVectorInContext:theContext];
+		[self relabel];
+    }
 	
     // Ticks
     [self drawTicksInContext:theContext atLocations:self.minorTickLocations withLength:self.minorTickLength isMajor:NO];
@@ -217,9 +224,11 @@
 	CPLineStyle *lineStyle = (major ? self.majorGridLineStyle : self.minorGridLineStyle);
 	
 	if ( lineStyle ) {
-		[super renderAsVectorInContext:context];
-		
-		[self relabel];
+    
+        if ( self.needsRelabel ) {
+			[super renderAsVectorInContext:context];
+			[self relabel];
+        }
 		
 		NSSet *locations = (major ? self.majorTickLocations : self.minorTickLocations);
 		CPCoordinate orthogonalCoordinate = (self.coordinate == CPCoordinateX ? CPCoordinateY : CPCoordinateX);
@@ -261,6 +270,48 @@
 }
 
 #pragma mark -
+#pragma mark Single Layer Axis Labels
+
+-(void)drawAxisLabelsInContext:(CGContextRef)context
+{
+	if ( self.needsRelabel ) {
+			[super renderAsVectorInContext:context];
+			[self relabel];
+        }
+        
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+    CGSize size = self.bounds.size ;
+    CGContextSaveGState(context);
+    CGContextTranslateCTM(context, 0, size.height);
+    CGContextScaleCTM(context, 1.0, -1.0) ;
+#endif
+
+    CPTextStyle *textStyle = self.labelTextStyle ;
+    CPCoordinate orthCoordinate = CPOrthogonalCoordinate(self.coordinate) ; 
+	for ( CPAxisLabel *axisLabel in self.axisLabels ) {
+        NSDecimalNumber *tickLocation = [NSDecimalNumber decimalNumberWithDecimal:[axisLabel tickLocation]] ;
+        NSString *labelString = [self.labelFormatter stringForObjectValue:tickLocation];
+		CGSize textSize = [labelString sizeWithTextStyle:textStyle];
+        textSize.width += 2 * kCPTextLayerMarginWidth ;  // TO DO: implement automatic sizing methods in CPAxisLabel and remove the same from CPTextLayer
+		textSize.height += 2 * kCPTextLayerMarginWidth ;
+        CGPoint tickBasePoint = [self viewPointForCoordinateDecimalNumber:[axisLabel tickLocation]];
+        CGPoint labelPosition = [axisLabel getPositionRelativeToViewPoint:tickBasePoint forCoordinate:orthCoordinate inDirection:self.tickDirection labelSize:textSize];
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+      	labelPosition.y = size.height - (labelPosition.y + textSize.height);
+#endif        
+		labelPosition.x += kCPTextLayerMarginWidth ;
+        labelPosition.y += kCPTextLayerMarginWidth ;
+		[labelString drawAtPoint:CPAlignPointToUserSpace(context, labelPosition) withTextStyle:textStyle inContext:context];
+    }
+    
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+		CGContextRestoreGState(context);
+#endif
+}
+
+
+
+#pragma mark -
 #pragma mark Description
 
 -(NSString *)description
@@ -283,7 +334,6 @@
 -(NSDecimal)defaultTitleLocation
 {
 	CPPlotRange *axisRange = [self.plotSpace plotRangeForCoordinate:self.coordinate];
-	
 	return CPDecimalDivide(CPDecimalAdd(axisRange.location, axisRange.end), CPDecimalFromDouble(2.0));
 }
 

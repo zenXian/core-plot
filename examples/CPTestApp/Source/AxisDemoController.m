@@ -55,6 +55,7 @@
 	CPXYAxisSet *axisSet = (CPXYAxisSet *)graph.axisSet;
     CPXYAxis *x = axisSet.xAxis;
 	x.separateLayers = NO;
+    x.separateLayerLabels = NO ;
     x.majorIntervalLength = CPDecimalFromString(@"0.5");
     x.minorTicksPerInterval = 4;
 	x.tickDirection = CPSignNone;

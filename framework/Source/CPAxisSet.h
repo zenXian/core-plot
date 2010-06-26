@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "CPLayer.h"
+#import "CPDefinitions.h"
 
 @class CPLineStyle;
 
@@ -13,5 +14,6 @@
 @property (nonatomic, readwrite, copy) CPLineStyle *borderLineStyle;
 
 -(void)relabelAxes;
+-(void)relabelAxisAtCoordinate:(CPCoordinate)coordinate;
 
 @end

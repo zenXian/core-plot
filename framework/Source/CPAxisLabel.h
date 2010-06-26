@@ -13,6 +13,7 @@
     CGFloat offset;
     CGFloat rotation;
     NSDecimal tickLocation;
+    CGSize textSize ;
 }
 
 @property (nonatomic, readwrite, retain) CPAxis *axis;
@@ -30,6 +31,7 @@
 /// @name Layout
 /// @{
 -(void)positionRelativeToViewPoint:(CGPoint)point forCoordinate:(CPCoordinate)coordinate inDirection:(CPSign)direction;
+-(CGPoint)getPositionRelativeToViewPoint:(CGPoint)point forCoordinate:(CPCoordinate)coordinate inDirection:(CPSign)direction labelSize:(CGSize)size;
 -(void)positionBetweenViewPoint:(CGPoint)firstPoint andViewPoint:(CGPoint)secondPoint forCoordinate:(CPCoordinate)coordinate inDirection:(CPSign)direction;
 ///	@}
 

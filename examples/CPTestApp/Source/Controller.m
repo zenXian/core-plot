@@ -76,6 +76,7 @@ static const CGFloat kZDistanceBetweenLayers = 20.0;
 	x.title = @"X Axis";
 	x.titleOffset = 30.0;
 	x.titleLocation = CPDecimalFromString(@"3.0");
+    //x.separateLayerLabels = NO ;
 
 	// Label y with an automatic label policy. 
     CPXYAxis *y = axisSet.yAxis;
@@ -96,6 +97,7 @@ static const CGFloat kZDistanceBetweenLayers = 20.0;
 	y.title = @"Y Axis";
 	y.titleOffset = 30.0;
 	y.titleLocation = CPDecimalFromString(@"2.7");
+    y.separateLayerLabels = NO ;
 
     // Rotate the labels by 45 degrees, just to show it can be done.
 	self.labelRotation = M_PI * 0.25;

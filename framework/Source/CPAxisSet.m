@@ -55,6 +55,16 @@
     }
 }
 
+/**	@brief Updates the axis labels for the specified coordinate in the axis set.
+ **/
+-(void)relabelAxisAtCoordinate:(CPCoordinate)coordinate
+{
+	CPAxis *axis = [self.axes objectAtIndex:coordinate] ;
+    [axis setNeedsLayout];
+    [axis setNeedsRelabel];
+    [axis setNeedsDisplay];
+}
+
 #pragma mark -
 #pragma mark Layout
 

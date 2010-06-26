@@ -147,10 +147,16 @@
     
     if ( self.dataSource ) {
         if ( [self.dataSource respondsToSelector:@selector(doublesForPlot:field:recordIndexRange:)] ) {
+            /*
             numbers = [NSMutableData dataWithLength:sizeof(double)*indexRange.length];
             double *pFieldValues = [numbers mutableBytes] ;
             double *pDoubleValues = [self.dataSource doublesForPlot:self field:fieldEnum recordIndexRange:indexRange] ;
             memcpy( pFieldValues, pDoubleValues, sizeof(double)*indexRange.length ) ;
+            */
+            
+            double *pDoubleValues = [self.dataSource doublesForPlot:self field:fieldEnum recordIndexRange:indexRange] ;
+            if ( pDoubleValues ) numbers = [NSData dataWithBytes:pDoubleValues length:sizeof(double)*indexRange.length] ;
+            else numbers = [NSData data] ;
             doublePrecisionCache = YES ;
         }
         else if ( [self.dataSource respondsToSelector:@selector(numbersForPlot:field:recordIndexRange:)] ) {

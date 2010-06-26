@@ -317,7 +317,14 @@
 -(void)plotSpaceMappingDidChange:(NSNotification *)notif 
 {
     [self setNeedsLayout];
-    [self.axisSet relabelAxes];
+    NSDictionary *userInfo = [notif userInfo] ;
+    if ( userInfo ) {
+        CPCoordinate coordinate = [[userInfo objectForKey:@"CPCoordinate"] intValue] ;
+        [self.axisSet relabelAxisAtCoordinate:coordinate] ;
+    }
+    else {
+        [self.axisSet relabelAxes];
+    }
     [[self allPlots] makeObjectsPerformSelector:@selector(setNeedsDisplay)];
 }
 

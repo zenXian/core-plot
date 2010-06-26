@@ -30,7 +30,7 @@
     [super viewDidLoad];
 
     // Create graph from theme
-    graph = [[CPXYGraph alloc] initWithFrame:CGRectZero];
+    graph = [[CPXYGraph alloc] initWithFrame:self.view.bounds];
 	CPTheme *theme = [CPTheme themeNamed:kCPDarkGradientTheme];
     [graph applyTheme:theme];
 	CPLayerHostingView *hostingView = (CPLayerHostingView *)self.view;
@@ -49,7 +49,7 @@
 
     // Axes
 	CPXYAxisSet *axisSet = (CPXYAxisSet *)graph.axisSet;
-    CPXYAxis *x = axisSet.xAxis;
+    CPXYAxis *x = axisSet.xAxis; 
     x.majorIntervalLength = CPDecimalFromString(@"0.5");
     x.orthogonalCoordinateDecimal = CPDecimalFromString(@"2");
     x.minorTicksPerInterval = 2;
@@ -70,7 +70,7 @@
 		[CPPlotRange plotRangeWithLocation:CPDecimalFromFloat(3.99) length:CPDecimalFromFloat(0.02)],
 		nil];
 	y.labelExclusionRanges = exclusionRanges;
-  
+    
 	// Create a blue plot area
 	CPScatterPlot *boundLinePlot = [[[CPScatterPlot alloc] init] autorelease];
     boundLinePlot.identifier = @"Blue Plot";
