@@ -13,6 +13,9 @@
 @property (nonatomic, readwrite, assign) BOOL dataNeedsReloading;
 @property (nonatomic, readwrite, retain) NSMutableDictionary *cachedData;
 
+@property (nonatomic, readwrite, assign) NSUInteger cachedDataCount;
+@property (nonatomic, readwrite, assign) BOOL doublePrecisionCache;
+
 @end
 ///	@endcond
 
@@ -51,6 +54,16 @@
 
 @synthesize cachedData;
 
+/**	@property cachedDataCount
+ *	@brief The number of data points stored in the cache.
+ **/
+@synthesize cachedDataCount;
+
+/**	@property doublePrecisionCache
+ *	@brief If YES, the cache holds data of type 'double', otherwise it holds NSNumber.
+ **/
+@synthesize doublePrecisionCache;
+
 #pragma mark -
 #pragma mark init/dealloc
 
@@ -58,6 +71,8 @@
 {
 	if ( self = [super initWithFrame:newFrame] ) {
 		cachedData = nil;
+		cachedDataCount = 0;
+		doublePrecisionCache = NO;
 		dataSource = nil;
 		identifier = nil;
 		plotSpace = nil;
@@ -147,31 +162,29 @@
     
     if ( self.dataSource ) {
         if ( [self.dataSource respondsToSelector:@selector(doublesForPlot:field:recordIndexRange:)] ) {
-            /*
-            numbers = [NSMutableData dataWithLength:sizeof(double)*indexRange.length];
-            double *pFieldValues = [numbers mutableBytes] ;
-            double *pDoubleValues = [self.dataSource doublesForPlot:self field:fieldEnum recordIndexRange:indexRange] ;
-            memcpy( pFieldValues, pDoubleValues, sizeof(double)*indexRange.length ) ;
-            */
-            
-            double *pDoubleValues = [self.dataSource doublesForPlot:self field:fieldEnum recordIndexRange:indexRange] ;
-            if ( pDoubleValues ) numbers = [NSData dataWithBytes:pDoubleValues length:sizeof(double)*indexRange.length] ;
-            else numbers = [NSData data] ;
-            doublePrecisionCache = YES ;
+            double *doubleValues = [self.dataSource doublesForPlot:self field:fieldEnum recordIndexRange:indexRange];
+			if ( doubleValues ) {
+				numbers = [NSData dataWithBytes:doubleValues length:sizeof(double)*indexRange.length];
+			}
+            else {
+				numbers = [NSData data];
+			}
+            self.doublePrecisionCache = YES;
         }
         else if ( [self.dataSource respondsToSelector:@selector(numbersForPlot:field:recordIndexRange:)] ) {
             numbers = [NSArray arrayWithArray:[self.dataSource numbersForPlot:self field:fieldEnum recordIndexRange:indexRange]];
+            self.doublePrecisionCache = NO;
         }
         else if ( [self.dataSource respondsToSelector:@selector(doubleForPlot:field:recordIndex:)] ) {
             NSUInteger recordIndex;
-            NSMutableData *fieldValues = [NSMutableData dataWithLength:sizeof(double)*indexRange.length];
-            double *pFieldValues = [fieldValues mutableBytes] ;
+            NSMutableData *fieldData = [NSMutableData dataWithLength:sizeof(double)*indexRange.length];
+            double *fieldValues = [fieldData mutableBytes];
             for ( recordIndex = indexRange.location; recordIndex < indexRange.location + indexRange.length; ++recordIndex ) {
                 double number = [self.dataSource doubleForPlot:self field:fieldEnum recordIndex:recordIndex];
-                *pFieldValues++ = number ;
+                *fieldValues++ = number;
             }
-            numbers = fieldValues ;
-            doublePrecisionCache = YES ;
+            numbers = fieldData;
+            self.doublePrecisionCache = YES;
         }
         else {
             BOOL respondsToSingleValueSelector = [self.dataSource respondsToSelector:@selector(numberForPlot:field:recordIndex:)];
@@ -187,10 +200,12 @@
                 }
             }
             numbers = fieldValues;
+            self.doublePrecisionCache = NO;
         }
     }
     else {
         numbers = [NSArray array];
+		self.doublePrecisionCache = NO;
     }
     
     return numbers;
@@ -225,7 +240,16 @@
  **/
 -(void)cacheNumbers:(id)numbers forField:(NSUInteger)fieldEnum 
 {
-	if ( numbers == nil ) return;
+	if ( numbers == nil ) {
+		self.cachedDataCount = 0;
+		return;
+	}
+	else if ( [numbers respondsToSelector:@selector(count)] ) {
+		self.cachedDataCount = [(NSArray *)numbers count];
+	}
+	else {
+		self.cachedDataCount = [(NSData *)numbers length] / sizeof(double);
+	}
     if ( cachedData == nil ) cachedData = [[NSMutableDictionary alloc] initWithCapacity:5];
     [cachedData setObject:[[numbers copy] autorelease] forKey:[NSNumber numberWithUnsignedInteger:fieldEnum]];
 }
