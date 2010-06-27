@@ -198,7 +198,9 @@
 		factor = CPDecimalFromInteger(0);
 	}
 	
-	CGFloat viewCoordinate = viewLength * [[NSDecimalNumber decimalNumberWithDecimal:factor] doubleValue];
+    NSDecimalNumber *decimalNumber = [[NSDecimalNumber alloc] initWithDecimal:factor] ;
+	CGFloat viewCoordinate = viewLength * [decimalNumber doubleValue];
+    [decimalNumber release] ;
     
     return viewCoordinate;
 }
