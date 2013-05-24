@@ -126,7 +126,6 @@
             date = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:[coordinateValue doubleValue]];
         }
         string = [self.dateFormatter stringFromDate:date];
-        [date release];
     }
 
     return string;

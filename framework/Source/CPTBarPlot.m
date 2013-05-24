@@ -1050,32 +1050,20 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
     CPTLineStyle *theLineStyle = [self barLineStyleForIndex:idx];
 
     if ( theFill || theLineStyle ) {
-        CGPathRef swatchPath;
         CGFloat radius = MAX(self.barCornerRadius, self.barBaseCornerRadius);
-        if ( radius > 0.0 ) {
-            radius     = MIN( MIN( radius, rect.size.width / CPTFloat(2.0) ), rect.size.height / CPTFloat(2.0) );
-            swatchPath = CreateRoundedRectPath(rect, radius);
-        }
-        else {
-            CGMutablePathRef mutablePath = CGPathCreateMutable();
-            CGPathAddRect(mutablePath, NULL, rect);
-            swatchPath = mutablePath;
-        }
 
         if ( [theFill isKindOfClass:[CPTFill class]] ) {
             CGContextBeginPath(context);
-            CGContextAddPath(context, swatchPath);
+            AddRoundedRectPath(context, CPTAlignIntegralRectToUserSpace(context, rect), radius);
             [theFill fillPathInContext:context];
         }
 
         if ( [theLineStyle isKindOfClass:[CPTLineStyle class]] ) {
             [theLineStyle setLineStyleInContext:context];
             CGContextBeginPath(context);
-            CGContextAddPath(context, swatchPath);
+            AddRoundedRectPath(context, CPTAlignRectToUserSpace(context, rect), radius);
             [theLineStyle strokePathInContext:context];
         }
-
-        CGPathRelease(swatchPath);
     }
 }
 

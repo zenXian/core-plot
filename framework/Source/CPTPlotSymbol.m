@@ -201,6 +201,30 @@
     }
 }
 
+-(void)setLineStyle:(CPTLineStyle *)newLineStyle
+{
+    if ( newLineStyle != lineStyle ) {
+        lineStyle        = newLineStyle;
+        self.cachedLayer = NULL;
+    }
+}
+
+-(void)setFill:(CPTFill *)newFill
+{
+    if ( newFill != fill ) {
+        fill             = newFill;
+        self.cachedLayer = NULL;
+    }
+}
+
+-(void)setUsesEvenOddClipRule:(BOOL)newEvenOddClipRule
+{
+    if ( newEvenOddClipRule != usesEvenOddClipRule ) {
+        usesEvenOddClipRule = newEvenOddClipRule;
+        self.cachedLayer    = NULL;
+    }
+}
+
 -(CGPathRef)cachedSymbolPath
 {
     if ( !cachedSymbolPath ) {
