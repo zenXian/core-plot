@@ -775,23 +775,9 @@ typedef struct CGPointError CGPointError;
     CPTFill *theFill = self.areaFill;
 
     if ( theFill ) {
-        CGPathRef swatchPath;
-        CGFloat radius = legend.swatchCornerRadius;
-        if ( radius > 0.0 ) {
-            radius     = MIN( MIN( radius, rect.size.width / CPTFloat(2.0) ), rect.size.height / CPTFloat(2.0) );
-            swatchPath = CreateRoundedRectPath(rect, radius);
-        }
-        else {
-            CGMutablePathRef mutablePath = CGPathCreateMutable();
-            CGPathAddRect(mutablePath, NULL, rect);
-            swatchPath = mutablePath;
-        }
-
         CGContextBeginPath(context);
-        CGContextAddPath(context, swatchPath);
+        AddRoundedRectPath(context, CPTAlignIntegralRectToUserSpace(context, rect), legend.swatchCornerRadius);
         [theFill fillPathInContext:context];
-
-        CGPathRelease(swatchPath);
     }
 
     CPTLineStyle *theBarLineStyle = [self barLineStyleForIndex:idx];
