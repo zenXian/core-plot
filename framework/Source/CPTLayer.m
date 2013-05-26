@@ -490,12 +490,12 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
                                         currentSize.height * anchor.y);
 
         if ( scale == 1.0 ) {
-            newPosition.x = round( currentPosition.x + anchor.x - newAnchor.x - CPTFloat(0.5) ) + newAnchor.x;
-            newPosition.y = round( currentPosition.y + anchor.y - newAnchor.y - CPTFloat(0.5) ) + newAnchor.y;
+            newPosition.x = round( currentPosition.x - newAnchor.x - CPTFloat(0.5) ) + newAnchor.x;
+            newPosition.y = round( currentPosition.y - newAnchor.y - CPTFloat(0.5) ) + newAnchor.y;
         }
         else {
-            newPosition.x = round( (currentPosition.x + anchor.x - newAnchor.x) * scale - CPTFloat(0.5) ) / scale + newAnchor.x;
-            newPosition.y = round( (currentPosition.y + anchor.y - newAnchor.y) * scale - CPTFloat(0.5) ) / scale + newAnchor.y;
+            newPosition.x = round( (currentPosition.x - newAnchor.x) * scale - CPTFloat(0.5) ) / scale + newAnchor.x;
+            newPosition.y = round( (currentPosition.y - newAnchor.y) * scale - CPTFloat(0.5) ) / scale + newAnchor.y;
         }
     }
     else {
@@ -703,20 +703,9 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
             return path;
         }
 
-        CGRect selfBounds = self.bounds;
-
-        if ( self.cornerRadius > 0.0 ) {
-            CGFloat radius = MIN( MIN( self.cornerRadius, selfBounds.size.width / CPTFloat(2.0) ), selfBounds.size.height / CPTFloat(2.0) );
-            path                 = CreateRoundedRectPath(selfBounds, radius);
-            self.outerBorderPath = path;
-            CGPathRelease(path);
-        }
-        else {
-            CGMutablePathRef mutablePath = CGPathCreateMutable();
-            CGPathAddRect(mutablePath, NULL, selfBounds);
-            self.outerBorderPath = mutablePath;
-            CGPathRelease(mutablePath);
-        }
+        path                 = CreateRoundedRectPath(self.bounds, self.cornerRadius);
+        self.outerBorderPath = path;
+        CGPathRelease(path);
 
         return self.outerBorderPath;
     }
@@ -882,6 +871,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     if ( newShadow != shadow ) {
         [shadow release];
         shadow = [newShadow copy];
+        [self setNeedsLayout];
         [self setNeedsDisplay];
     }
 }
