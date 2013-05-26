@@ -767,7 +767,6 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
     CPTCoordinate dependentCoord   = (horizontalBars ? CPTCoordinateX : CPTCoordinateY);
 
     CPTPlotSpace *thePlotSpace = self.plotSpace;
-    CPTPlotArea *thePlotArea   = self.plotArea;
 
     if ( self.doublePrecisionCache ) {
         double plotPoint[2];
@@ -781,7 +780,7 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
         if ( isnan(plotPoint[dependentCoord]) ) {
             return NO;
         }
-        *tipPoint = [self convertPoint:[thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint] fromLayer:thePlotArea];
+        *tipPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
 
         // Base point
         if ( !self.barBasesVary ) {
@@ -793,7 +792,7 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
         if ( isnan(plotPoint[dependentCoord]) ) {
             return NO;
         }
-        *basePoint = [self convertPoint:[thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint] fromLayer:thePlotArea];
+        *basePoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
     }
     else {
         NSDecimal plotPoint[2];
@@ -807,7 +806,7 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
         if ( NSDecimalIsNotANumber(&plotPoint[dependentCoord]) ) {
             return NO;
         }
-        *tipPoint = [self convertPoint:[thePlotSpace plotAreaViewPointForPlotPoint:plotPoint] fromLayer:thePlotArea];
+        *tipPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
 
         // Base point
         if ( !self.barBasesVary ) {
@@ -819,7 +818,7 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
         if ( NSDecimalIsNotANumber(&plotPoint[dependentCoord]) ) {
             return NO;
         }
-        *basePoint = [self convertPoint:[thePlotSpace plotAreaViewPointForPlotPoint:plotPoint] fromLayer:thePlotArea];
+        *basePoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
     }
 
     // Determine bar width and offset.
@@ -1060,32 +1059,20 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
     CPTLineStyle *theLineStyle = [self barLineStyleForIndex:idx];
 
     if ( theFill || theLineStyle ) {
-        CGPathRef swatchPath;
         CGFloat radius = MAX(self.barCornerRadius, self.barBaseCornerRadius);
-        if ( radius > 0.0 ) {
-            radius     = MIN( MIN( radius, rect.size.width / CPTFloat(2.0) ), rect.size.height / CPTFloat(2.0) );
-            swatchPath = CreateRoundedRectPath(rect, radius);
-        }
-        else {
-            CGMutablePathRef mutablePath = CGPathCreateMutable();
-            CGPathAddRect(mutablePath, NULL, rect);
-            swatchPath = mutablePath;
-        }
 
         if ( [theFill isKindOfClass:[CPTFill class]] ) {
             CGContextBeginPath(context);
-            CGContextAddPath(context, swatchPath);
+            AddRoundedRectPath(context, CPTAlignIntegralRectToUserSpace(context, rect), radius);
             [theFill fillPathInContext:context];
         }
 
         if ( [theLineStyle isKindOfClass:[CPTLineStyle class]] ) {
             [theLineStyle setLineStyleInContext:context];
             CGContextBeginPath(context);
-            CGContextAddPath(context, swatchPath);
+            AddRoundedRectPath(context, CPTAlignRectToUserSpace(context, rect), radius);
             [theLineStyle strokePathInContext:context];
         }
-
-        CGPathRelease(swatchPath);
     }
 }
 
