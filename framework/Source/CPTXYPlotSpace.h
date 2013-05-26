@@ -12,4 +12,8 @@
 @property (nonatomic, readwrite, assign) CPTScaleType xScaleType;
 @property (nonatomic, readwrite, assign) CPTScaleType yScaleType;
 
+@property (nonatomic, readwrite) BOOL allowsMomentum;
+@property (nonatomic, readwrite) BOOL elasticGlobalXRange;
+@property (nonatomic, readwrite) BOOL elasticGlobalYRange;
+
 @end
