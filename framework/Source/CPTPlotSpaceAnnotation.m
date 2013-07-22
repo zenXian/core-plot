@@ -4,6 +4,18 @@
 #import "CPTPlotAreaFrame.h"
 #import "CPTPlotSpace.h"
 
+/// @cond
+
+@interface CPTPlotSpaceAnnotation()
+
+-(void)setContentNeedsLayout;
+
+@end
+
+/// @endcond
+
+#pragma mark -
+
 /** @brief Positions a content layer relative to some anchor point in a plot space.
  *
  *  Plot space annotations are positioned relative to a plot space. This allows the
@@ -46,7 +58,7 @@
         anchorPlotPoint = [newPlotPoint copy];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(positionContentLayer)
+                                                 selector:@selector(setContentNeedsLayout)
                                                      name:CPTPlotSpaceCoordinateMappingDidChangeNotification
                                                    object:plotSpace];
     }
@@ -98,6 +110,11 @@
 #pragma mark Layout
 
 /// @cond
+
+-(void)setContentNeedsLayout
+{
+    [self.contentLayer.superlayer setNeedsLayout];
+}
 
 -(void)positionContentLayer
 {
@@ -151,7 +168,7 @@
 {
     if ( anchorPlotPoint != newPlotPoint ) {
         anchorPlotPoint = [newPlotPoint copy];
-        [self positionContentLayer];
+        [self setContentNeedsLayout];
     }
 }
 
