@@ -31,10 +31,15 @@
  **/
 @synthesize boundSetter;
 
-/** @property __cpt_weak NSObject<CPTAnimationDelegate> *delegate
- *  @brief The animation delegate
+/** @property __cpt_weak id<CPTAnimationDelegate>delegate
+ *  @brief The animation delegate.
  **/
 @synthesize delegate;
+
+/** @property BOOL canceled
+ *  @brief If @YES, this animation operation has been canceled and will no longer post updates.
+ **/
+@synthesize canceled;
 
 /// @name Initialization
 /// @{
@@ -48,6 +53,7 @@
  *  - @ref boundGetter = @NULL
  *  - @ref boundSetter = @NULL
  *  - @ref delegate = @nil
+ *  - @ref canceled = @NO
  *
  *  @return The initialized object.
  **/
@@ -60,23 +66,13 @@
         boundGetter    = NULL;
         boundSetter    = NULL;
         delegate       = nil;
+        canceled       = NO;
     }
 
     return self;
 }
 
 /// @}
-
-/// @cond
-
--(void)dealloc
-{
-    [period release];
-    [boundObject release];
-    [super dealloc];
-}
-
-/// @endcond
 
 #pragma mark -
 #pragma mark Description
@@ -85,7 +81,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@ animate %@ %@ with period %@>", [super description], self.boundObject, NSStringFromSelector(self.boundGetter), period];
+    return [NSString stringWithFormat:@"<%@ animate %@ %@ with period %@>", [super description], self.boundObject, NSStringFromSelector(self.boundGetter), self.period];
 }
 
 /// @endcond
