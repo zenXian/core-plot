@@ -483,7 +483,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 openPoint = CPTPointMake(NAN, NAN);
             }
             else {
-                openPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                openPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             // high point
@@ -492,7 +492,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 highPoint = CPTPointMake(NAN, NAN);
             }
             else {
-                highPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                highPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             // low point
@@ -501,7 +501,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 lowPoint = CPTPointMake(NAN, NAN);
             }
             else {
-                lowPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                lowPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             // close point
@@ -510,7 +510,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 closePoint = CPTPointMake(NAN, NAN);
             }
             else {
-                closePoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                closePoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             CGFloat xCoord = openPoint.x;
@@ -576,7 +576,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 openPoint = CPTPointMake(NAN, NAN);
             }
             else {
-                openPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                openPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             // high point
@@ -585,7 +585,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 highPoint = CPTPointMake(NAN, NAN);
             }
             else {
-                highPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                highPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             // low point
@@ -594,7 +594,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 lowPoint = CPTPointMake(NAN, NAN);
             }
             else {
-                lowPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                lowPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             // close point
@@ -603,7 +603,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
                 closePoint = CPTPointMake(NAN, NAN);
             }
             else {
-                closePoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                closePoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
             }
 
             CGFloat xCoord = openPoint.x;
@@ -1125,7 +1125,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // open point
             plotPoint[dependentCoord] = *openBytes++;
             if ( !isnan(plotPoint[dependentCoord]) && [yRange containsDouble:plotPoint[dependentCoord]] ) {
-                openPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                openPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, openPoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
@@ -1139,7 +1139,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // high point
             plotPoint[dependentCoord] = *highBytes++;
             if ( !isnan(plotPoint[dependentCoord]) && [yRange containsDouble:plotPoint[dependentCoord]] ) {
-                highPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                highPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, highPoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
@@ -1153,7 +1153,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // low point
             plotPoint[dependentCoord] = *lowBytes++;
             if ( !isnan(plotPoint[dependentCoord]) && [yRange containsDouble:plotPoint[dependentCoord]] ) {
-                lowPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                lowPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, lowPoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
@@ -1167,7 +1167,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // close point
             plotPoint[dependentCoord] = *closeBytes++;
             if ( !isnan(plotPoint[dependentCoord]) && [yRange containsDouble:plotPoint[dependentCoord]] ) {
-                closePoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                closePoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, closePoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
@@ -1218,7 +1218,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // open point
             plotPoint[dependentCoord] = *openBytes++;
             if ( !NSDecimalIsNotANumber(&plotPoint[dependentCoord]) && [yRange contains:plotPoint[dependentCoord]] ) {
-                openPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                openPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, openPoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
@@ -1232,7 +1232,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // high point
             plotPoint[dependentCoord] = *highBytes++;
             if ( !NSDecimalIsNotANumber(&plotPoint[dependentCoord]) && [yRange contains:plotPoint[dependentCoord]] ) {
-                highPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                highPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, highPoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
@@ -1246,7 +1246,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // low point
             plotPoint[dependentCoord] = *lowBytes++;
             if ( !NSDecimalIsNotANumber(&plotPoint[dependentCoord]) && [yRange contains:plotPoint[dependentCoord]] ) {
-                lowPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                lowPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, lowPoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
@@ -1260,7 +1260,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
             // close point
             plotPoint[dependentCoord] = *closeBytes++;
             if ( !NSDecimalIsNotANumber(&plotPoint[dependentCoord]) && [yRange contains:plotPoint[dependentCoord]] ) {
-                closePoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                closePoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
                 CGFloat distanceSquared = squareOfDistanceBetweenPoints(point, closePoint);
                 if ( isnan(minimumDistanceSquared) || (distanceSquared < minimumDistanceSquared) ) {
                     minimumDistanceSquared = distanceSquared;
