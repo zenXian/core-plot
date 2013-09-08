@@ -836,7 +836,7 @@ static const CGFloat colorLookupTable[10][3] =
                                              plotAreaBounds.origin.y + plotAreaBounds.size.height * anchor.y);
 
         NSDecimal plotPoint[2];
-        [self.plotSpace plotPoint:plotPoint forPlotAreaViewPoint:centerPoint];
+        [self.plotSpace plotPoint:plotPoint numberOfCoordinates:2 forPlotAreaViewPoint:centerPoint];
         NSDecimalNumber *xValue = [[NSDecimalNumber alloc] initWithDecimal:plotPoint[CPTCoordinateX]];
         NSDecimalNumber *yValue = [[NSDecimalNumber alloc] initWithDecimal:plotPoint[CPTCoordinateY]];
         label.anchorPlotPoint = @[xValue, yValue];
@@ -1003,13 +1003,16 @@ static const CGFloat colorLookupTable[10][3] =
  **/
 -(BOOL)pointingDeviceDownEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
-    id<CPTPieChartDelegate> theDelegate = self.delegate;
-    CPTGraph *theGraph                  = self.graph;
-    CPTPlotArea *thePlotArea            = self.plotArea;
+    CPTGraph *theGraph       = self.graph;
+    CPTPlotArea *thePlotArea = self.plotArea;
 
-    if ( theGraph && thePlotArea && !self.hidden &&
-         ([theDelegate respondsToSelector:@selector(pieChart:sliceWasSelectedAtRecordIndex:)] ||
-          [theDelegate respondsToSelector:@selector(pieChart:sliceWasSelectedAtRecordIndex:withEvent:)]) ) {
+    if ( !theGraph || !thePlotArea || self.hidden ) {
+        return NO;
+    }
+
+    id<CPTPieChartDelegate> theDelegate = self.delegate;
+    if ( [theDelegate respondsToSelector:@selector(pieChart:sliceWasSelectedAtRecordIndex:)] ||
+         [theDelegate respondsToSelector:@selector(pieChart:sliceWasSelectedAtRecordIndex:withEvent:)] ) {
         CGPoint plotAreaPoint = [theGraph convertPoint:interactionPoint toLayer:thePlotArea];
 
         NSUInteger idx = [self dataIndexFromInteractionPoint:plotAreaPoint];
@@ -1023,11 +1026,8 @@ static const CGFloat colorLookupTable[10][3] =
             return YES;
         }
     }
-    else {
-        return [super pointingDeviceDownEvent:event atPoint:interactionPoint];
-    }
 
-    return NO;
+    return [super pointingDeviceDownEvent:event atPoint:interactionPoint];
 }
 
 /// @}

@@ -308,7 +308,9 @@ NSString *const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; ///< Plot sym
         return;
     }
 
-    if ( self.areaFill || self.areaFill2 || self.dataLineStyle.dashPattern ) {
+    CPTLineStyle *lineStyle = self.dataLineStyle;
+
+    if ( self.areaFill || self.areaFill2 || lineStyle.dashPattern || lineStyle.lineFill ) {
         // show all points to preserve the line dash and area fills
         for ( NSUInteger i = 0; i < dataCount; i++ ) {
             pointDrawFlags[i] = YES;
@@ -458,7 +460,7 @@ NSString *const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; ///< Plot sym
                 plotPoint[CPTCoordinateX] = x;
                 plotPoint[CPTCoordinateY] = y;
 
-                viewPoints[i] = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+                viewPoints[i] = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
             }
         }
     }
@@ -479,7 +481,7 @@ NSString *const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; ///< Plot sym
                 plotPoint[CPTCoordinateX] = x;
                 plotPoint[CPTCoordinateY] = y;
 
-                viewPoints[i] = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+                viewPoints[i] = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
             }
         }
     }
@@ -588,14 +590,14 @@ NSString *const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; ///< Plot sym
         plotPoint[CPTScatterPlotFieldX] = [self cachedDoubleForField:CPTScatterPlotFieldX recordIndex:idx];
         plotPoint[CPTScatterPlotFieldY] = [self cachedDoubleForField:CPTScatterPlotFieldY recordIndex:idx];
 
-        viewPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint];
+        viewPoint = [thePlotSpace plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:2];
     }
     else {
         NSDecimal plotPoint[2];
         plotPoint[CPTScatterPlotFieldX] = [self cachedDecimalForField:CPTScatterPlotFieldX recordIndex:idx];
         plotPoint[CPTScatterPlotFieldY] = [self cachedDecimalForField:CPTScatterPlotFieldY recordIndex:idx];
 
-        viewPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint];
+        viewPoint = [thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
     }
 
     return viewPoint;
@@ -683,7 +685,7 @@ NSString *const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; ///< Plot sym
                 NSDecimal plotPoint[2];
                 plotPoint[CPTCoordinateX] = [xValue decimalValue];
                 plotPoint[CPTCoordinateY] = theAreaBaseValue;
-                CGPoint baseLinePoint = [self convertPoint:[thePlotSpace plotAreaViewPointForPlotPoint:plotPoint] fromLayer:self.plotArea];
+                CGPoint baseLinePoint = [self convertPoint:[thePlotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2] fromLayer:self.plotArea];
                 if ( self.alignsPointsToPixels ) {
                     baseLinePoint = CPTAlignIntegralPointToUserSpace(context, baseLinePoint);
                 }
