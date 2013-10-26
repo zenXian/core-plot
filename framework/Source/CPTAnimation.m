@@ -294,17 +294,6 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
                               );
             }
         }
-        else if ( currentTime > endTime ) {
-            [expiredOperations addObject:animationOperation];
-
-            if ( [animationDelegate respondsToSelector:@selector(animationDidFinish:)] ) {
-                dispatch_async(mainQueue, ^{
-                    [animationDelegate animationDidFinish:animationOperation];
-                }
-
-                              );
-            }
-        }
         else if ( currentTime >= startTime ) {
             id boundObject = animationOperation.boundObject;
 
@@ -334,6 +323,18 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
                                        withObject:parameters
                                     waitUntilDone:NO
                                             modes:runModes];
+
+                if ( currentTime >= endTime ) {
+                    [expiredOperations addObject:animationOperation];
+
+                    if ( [animationDelegate respondsToSelector:@selector(animationDidFinish:)] ) {
+                        dispatch_async(mainQueue, ^{
+                            [animationDelegate animationDidFinish:animationOperation];
+                        }
+
+                                      );
+                    }
+                }
             }
         }
     }

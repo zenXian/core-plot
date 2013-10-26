@@ -236,7 +236,7 @@
             [NSException raise:CPTException format:@"Unsupported calendar unit: NSTimeZoneCalendarUnit"];
             break;
 #endif
-#if __IPHONE_4_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+#if MAC_OS_X_VERSION_10_8 < MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_4_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
         default:
             [NSException raise:CPTException format:@"Unsupported calendar unit"];
             break;

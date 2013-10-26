@@ -116,7 +116,7 @@ NSString *const outerChartName = @"Outer";
                      duration:0.5
                     withDelay:0.25
                animationCurve:CPTAnimationCurveBounceOut
-                     delegate:nil];
+                     delegate:self];
     }
 
     [piePlot release];
@@ -182,6 +182,34 @@ NSString *const outerChartName = @"Outer";
         result = (index == 0 ? 15.0 : 0.0);
     }
     return result;
+}
+
+#pragma mark -
+#pragma mark Animation Delegate
+
+-(void)animationDidStart:(CPTAnimationOperation *)operation
+{
+    NSLog(@"animationDidStart: %@", operation);
+}
+
+-(void)animationDidFinish:(CPTAnimationOperation *)operation
+{
+    NSLog(@"animationDidFinish: %@", operation);
+}
+
+-(void)animationCancelled:(CPTAnimationOperation *)operation
+{
+    NSLog(@"animationCancelled: %@", operation);
+}
+
+-(void)animationWillUpdate:(CPTAnimationOperation *)operation
+{
+    NSLog(@"animationWillUpdate:");
+}
+
+-(void)animationDidUpdate:(CPTAnimationOperation *)operation
+{
+    NSLog(@"animationDidUpdate:");
 }
 
 @end
