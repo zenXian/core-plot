@@ -1,5 +1,14 @@
 var NAVTREEINDEX7 =
 {
+"protocol_c_p_t_responder-p.html#a74027c4e76c91673bc2919ac3160b838":[3,0,77,3],
+"protocol_c_p_t_responder-p.html#a8143e6f59b4f71b890aff1c53bd1deda":[3,0,77,1],
+"protocol_c_p_t_responder-p.html#ae1e168c2cf883e9567e18a2ec7c1554c":[3,0,77,0],
+"protocol_c_p_t_responder-p.html#af08fabf6e38adeff3178b955ec09f9c4":[3,0,77,2],
+"protocol_c_p_t_scatter_plot_data_source-p.html":[3,0,80],
+"protocol_c_p_t_scatter_plot_data_source-p.html#aecc09bf2220d7e45571d7f41d2459832":[3,0,80,1],
+"protocol_c_p_t_scatter_plot_data_source-p.html#affc727eaa2c04713828b49598f819764":[3,0,80,0],
+"protocol_c_p_t_scatter_plot_delegate-p.html":[3,0,81],
+"protocol_c_p_t_scatter_plot_delegate-p.html#a1da0d81587a750ee94e4cd96762f097b":[3,0,81,1],
 "protocol_c_p_t_scatter_plot_delegate-p.html#a296a514ccb58946904a6fa781a6c4e73":[3,0,81,0],
 "protocol_c_p_t_trading_range_plot_data_source-p.html":[3,0,90],
 "protocol_c_p_t_trading_range_plot_data_source-p.html#a3eb6d30513a0408eb3011377d0c15ba2":[3,0,90,6],

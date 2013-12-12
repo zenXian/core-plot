@@ -41,6 +41,16 @@
  **/
 @synthesize canceled;
 
+/** @property id<NSCopying, NSObject> identifier
+ *  @brief An object used to identify the layer in collections.
+ **/
+@synthesize identifier;
+
+/** @property NSDictionary *userInfo
+ *  @brief Application-specific user info that can be attached to the operation.
+ **/
+@synthesize userInfo;
+
 /// @name Initialization
 /// @{
 
@@ -54,6 +64,8 @@
  *  - @ref boundSetter = @NULL
  *  - @ref delegate = @nil
  *  - @ref canceled = @NO
+ *  - @ref identifier = @nil
+ *  - @ref userInfo = @nil
  *
  *  @return The initialized object.
  **/
@@ -67,6 +79,8 @@
         boundSetter    = NULL;
         delegate       = nil;
         canceled       = NO;
+        identifier     = nil;
+        userInfo       = nil;
     }
 
     return self;
