@@ -5,18 +5,6 @@
 To be determined.
 
 ## Details
-- **Changed**: Miscellaneous bug fixes and cleanup.
-- **Removed**: Removed the elastic global range properties from `CPTXYPlotSpace`. Turning on momentum scrolling now automatically allows elastic ranges, too.
-
-
-
-# Next Release (TBD)
-
-## Release Notes
-
-To be determined.
-
-## Details
 - **New**: Added hand cursors to the Mac hosting view to indicate when user interaction is enabled and when dragging is in progress.
 - **New**: Added two additional initialization methods to `CPTImage`. 
 - **New**: Added a dependency on the Accelerate framework. All iOS clients must now link against this framework.
@@ -27,6 +15,25 @@ To be determined.
 - **Changed**: Updated `CPTImage` to automatically handle switching between Retina and non-Retina displays.
 - **Changed**: Miscellaneous bug fixes and cleanup.
 - **Removed**: Removed the deprecated plot space methods.
+
+
+
+# Next Release (TBD)
+
+## Release Notes
+
+To be determined.
+
+## Details
+- **New**: Updated CPTAnimation to allow animations to start at the current value of the animated property instead of a fixed value.
+- **New**: Added annotations to the responder chain.
+- **New**: Added a plot space method to scale the plot range for a single coordinate.
+- **New**: Added properties to control momentum scrolling for the x- and y-directions separately.
+- **New**: Added an identifier and user info dictionary to animation operations.
+- **New**: Animations can now start when the value of the animated property enters the animated range.
+- **Changed**: Switched to a new algorithm for computing curved scatter plots.
+- **Changed**: Miscellaneous bug fixes and cleanup.
+- **Removed**: Removed the elastic global range properties from `CPTXYPlotSpace`. Turning on momentum scrolling now automatically allows elastic ranges, too.
 
 
 

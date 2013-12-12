@@ -77,6 +77,8 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
  **/
 @synthesize timer;
 
+#pragma mark - Init/Dealloc
+
 /** @internal
  *  @property dispatch_queue_t animationQueue;
  *  @brief The serial dispatch queue used to synchronize animation updates.
@@ -133,7 +135,7 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
 
 /// @endcond
 
-#pragma mark -
+#pragma mark - Animation Controller Instance
 
 /** @brief A shared CPTAnimation instance responsible for scheduling and executing animations.
  *  @return The shared CPTAnimation instance.
@@ -150,7 +152,7 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
     return shared;
 }
 
-#pragma mark -
+#pragma mark - Property Animation
 
 /** @brief Creates an animation operation with the given properties and adds it to the animation queue.
  *  @param object The object to animate.
@@ -189,7 +191,7 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
 
 /// @endcond
 
-#pragma mark -
+#pragma mark - Animation Management
 
 /** @brief Adds an animation operation to the animation queue.
  *  @param animationOperation The animation operation to add.
@@ -235,7 +237,23 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
     });
 }
 
-#pragma mark -
+#pragma mark - Retrieving Animation Operations
+
+/** @brief Gets the animation operation with the given identifier from the animation operation array.
+ *  @param identifier An animation operation identifier.
+ *  @return The animation operation with the given identifier or @nil if it was not found.
+ **/
+-(CPTAnimationOperation *)operationWithIdentifier:(id<NSCopying, NSObject>)identifier
+{
+    for ( CPTAnimationOperation *operation in self.animationOperations ) {
+        if ( [[operation identifier] isEqual:identifier] ) {
+            return operation;
+        }
+    }
+    return nil;
+}
+
+#pragma mark - Animation Update
 
 /// @cond
 
@@ -259,8 +277,21 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
         CPTAnimationPeriod *period = animationOperation.period;
 
         CGFloat duration  = period.duration;
-        CGFloat startTime = period.startOffset + period.delay;
-        CGFloat endTime   = startTime + duration;
+        CGFloat startTime = period.startOffset;
+        CGFloat delay     = period.delay;
+        if ( isnan(delay) ) {
+            if ( [period canStartWithValueFromObject:animationOperation.boundObject propertyGetter:animationOperation.boundGetter] ) {
+                period.delay = currentTime - startTime;
+                startTime    = currentTime;
+            }
+            else {
+                startTime = CPTFloat(NAN);
+            }
+        }
+        else {
+            startTime += delay;
+        }
+        CGFloat endTime = startTime + duration;
 
         if ( animationOperation.isCanceled ) {
             [expiredOperations addObject:animationOperation];
@@ -443,7 +474,7 @@ dispatch_source_t CreateDispatchTimer(CGFloat interval, dispatch_queue_t queue, 
 
 /// @endcond
 
-#pragma mark -
+#pragma mark - Timing Functions
 
 /// @cond
 

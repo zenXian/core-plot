@@ -1,5 +1,9 @@
 #import "CPTPlotSpace.h"
 
+#import "CPTMutablePlotRange.h"
+#import "CPTPlot.h"
+#import "CPTUtilities.h"
+
 NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSpaceCoordinateMappingDidChangeNotification";
 
 NSString *const CPTPlotSpaceCoordinateKey   = @"CPTPlotSpaceCoordinateKey";
@@ -378,6 +382,35 @@ NSString *const CPTPlotSpaceDisplacementKey = @"CPTPlotSpaceDisplacementKey";
  **/
 -(void)scaleToFitPlots:(NSArray *)plots
 {
+}
+
+/** @brief Scales the plot range for the given coordinate so that the plots just fit in the visible space.
+ *  @param plots An array of the plots that have to fit in the visible area.
+ *  @param coordinate The axis coordinate.
+ **/
+-(void)scaleToFitPlots:(NSArray *)plots forCoordinate:(CPTCoordinate)coordinate
+{
+    if ( plots.count == 0 ) {
+        return;
+    }
+
+    // Determine union of ranges
+    CPTMutablePlotRange *unionRange = nil;
+    for ( CPTPlot *plot in plots ) {
+        CPTPlotRange *currentRange = [plot plotRangeForCoordinate:coordinate];
+        if ( !unionRange ) {
+            unionRange = [currentRange mutableCopy];
+        }
+        [unionRange unionPlotRange:currentRange];
+    }
+
+    // Set range
+    if ( unionRange ) {
+        if ( CPTDecimalEquals( unionRange.length, CPTDecimalFromInteger(0) ) ) {
+            [unionRange unionPlotRange:[self plotRangeForCoordinate:coordinate]];
+        }
+        [self setPlotRange:unionRange forCoordinate:coordinate];
+    }
 }
 
 /** @brief Zooms the plot space equally in each dimension.
